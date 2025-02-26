@@ -8,6 +8,7 @@ import AdminProfile from "@/Pages/Dashboard/Admin/AdminProfile/AdminProfile";
 import Categories from "@/Pages/Dashboard/Admin/Categories/Categories";
 import PublishNewPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewPost";
 import MyBlogPosts from "@/Pages/Dashboard/Admin/MyBlogPosts/MyBlogPosts";
+// import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       { path: "/dashboard/admin/add-category", element: <Categories /> },
       { path: "/dashboard/admin/add-service", element: <PublishNewPost /> },
       { path: "/dashboard/admin/edit-service", element: <MyBlogPosts /> },
+      // { path: "/dashboard/admin/blog-editor-new-post", element: <PublishNewBlogPost /> },
     ],
   },
   {

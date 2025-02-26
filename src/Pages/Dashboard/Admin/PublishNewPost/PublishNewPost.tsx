@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -55,7 +55,7 @@ const PublishNewPost = () => {
   const onSubmit = async () => {
     const postData = {
       title: title,
-      author: "Ismail",
+      author: "Admin",
       image: uploadedImageUrl,
       body: content,
       category: selectedCategories.map((cat) => cat?.value),

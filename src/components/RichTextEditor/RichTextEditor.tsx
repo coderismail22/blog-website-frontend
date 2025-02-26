@@ -8,9 +8,6 @@ interface RichTextEditorProps {
 
 const RichTextEditor = ({ content, onChangeContent }: RichTextEditorProps) => {
   const editor = useRef(null);
-  // {
-  //   console.log("richtexteditor", content);
-  // }
 
   return (
     <JoditEditor
@@ -18,7 +15,7 @@ const RichTextEditor = ({ content, onChangeContent }: RichTextEditorProps) => {
       ref={editor}
       value={content}
       // tabIndex={1} // tabIndex of textarea
-      onChange={(newContent) => onChangeContent(newContent)}
+      onBlur={(newContent) => onChangeContent(newContent)}
     />
   );
 };

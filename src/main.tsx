@@ -17,7 +17,7 @@ createRoot(rootElement).render(
     <PersistGate loading={null} persistor={persistor}>
       <StrictMode>
         <RouterProvider router={router} />
-        <Toaster richColors  />
+        <Toaster richColors />
       </StrictMode>
     </PersistGate>
   </Provider>
