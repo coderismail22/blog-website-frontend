@@ -10,13 +10,13 @@ export const sidebarData = {
       icon: BiCategory,
     },
     {
-      icon: FaRegListAlt,
-      label: "Add Service",
+      icon: FaRegEdit ,
+      label: "New Post",
       path: "/dashboard/admin/add-service",
     },
     {
-      icon: FaRegEdit ,
-      label: "Edit Service",
+      icon: FaRegListAlt,
+      label: "All Posts",
       path: "/dashboard/admin/edit-service",
     },
   ],

@@ -1,3 +1,4 @@
+import MoveToTop from "@/components/MoveToTop/MoveToTop";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import Footer from "@/components/Shared/Footer";
 import Navbar from "@/components/Shared/Navbar";
@@ -12,6 +13,7 @@ const MainLayout = () => {
         <Outlet />
       </div>
       <Footer />
+      <MoveToTop />
     </>
   );
 };

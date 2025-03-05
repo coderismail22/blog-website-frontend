@@ -10,30 +10,28 @@ import {
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import AppSidebar from "@/components/DashboardAndSidebar/AppSidebar";
 import CustomBreadcrumbLink from "../CustomBreadcrumbLink/CustomBreadcrumbLink";
 // import { authKey } from "@/api/authKey";
 import { FaArrowLeft } from "react-icons/fa";
-
-import Loader from "../Loader/Loader";
+import { logout } from "@/redux/slices/authSlice";
 import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "../ui/button";
 // import Loader from "../Loader/Loader";
 
 const AppDashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log("user", user);
-  // if (!role) {
-  //   return <Loader />;
-  // }
 
-  // While redirecting, role will be undefined, so render nothing
-  // if (!role) {
-  //   navigate("/auth/login");
-  //   return null; // Prevent further rendering while redirecting
-  // }
-  const role = "admin";
+  const role = user?.role as "admin" | "superAdmin";
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <SidebarProvider>
       <AppSidebar role={role} />
@@ -52,7 +50,14 @@ const AppDashboard = () => {
                   </p>
                 </CustomBreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbItem>{/* <LogoutButton /> */}</BreadcrumbItem>
+              <BreadcrumbItem>
+                <Button
+                  className="bg-gradient-to-tr from-[#6a82fb] to-[#fc5c7d]  hover:from-[#fc5c7d] hover:to-[#6a82fb]"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </Button>
+              </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>

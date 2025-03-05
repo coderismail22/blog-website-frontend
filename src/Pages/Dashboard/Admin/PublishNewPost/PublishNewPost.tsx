@@ -1,50 +1,99 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Swal from "sweetalert2";
 import Select, { MultiValue } from "react-select";
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
 import { Button } from "@/components/ui/button";
-
-interface CategoryOption {
-  value: string;
-  label: string;
-}
-// TODO: Fetch Categories From Database
-const categoriesOptions: CategoryOption[] = [
-  { value: "html", label: "HTML" },
-  { value: "css", label: "CSS" },
-  { value: "mongoose", label: "Mongoose" },
-  { value: "react", label: "React" },
-  { value: "javascript", label: "JavaScript" },
-];
-
-interface FormData {
-  title: string;
-}
+import axiosInstance from "@/api/axiosInstance";
+import { handleAxiosError } from "@/utils/handleAxiosError";
+import { toast } from "sonner";
+import "../../../../styles/swal.css";
+import { ICategoryOption, FormData, IAuthor } from "./post.type";
+import DynamicSelectField from "@/components/CustomForm/DynamicSelect";
 
 const PublishNewPost = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
     watch,
   } = useForm<FormData>();
   const title = watch("title", "");
+  const description = watch("description", "");
+  const [tags, setTags] = useState<string[]>([]);
   const [content, setContent] = useState<string>("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
+  // Categories
   const [selectedCategories, setSelectedCategories] = useState<
-    MultiValue<CategoryOption>
+    MultiValue<ICategoryOption>
   >([]);
+  const [categoriesOptions, setCategoriesOptions] = useState<ICategoryOption[]>(
+    []
+  );
+
+  // Authors
+  const [selectedAuthors, setSelectedAuthors] = useState<MultiValue<IAuthor>>(
+    []
+  );
+  const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axiosInstance.get("/categories");
+
+        // Transform data to match react-select format
+        // TODO: Add a type here
+        const formattedCategories = data?.data?.map((category: any) => ({
+          value: category.name,
+          label: category.name,
+        }));
+
+        setCategoriesOptions(formattedCategories);
+      } catch (error) {
+        toast.error("Error fetching categories:");
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Handle Category Change
   const handleCategoriesChange = (
-    selectedOptions: MultiValue<CategoryOption>
+    selectedOptions: MultiValue<ICategoryOption>
   ) => {
     setSelectedCategories(selectedOptions || []); // Ensure it's an empty array when no categories are selected
+  };
+
+  // Fetch authors
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const { data } = await axiosInstance.get("/author");
+
+        // TODO: Add a type here
+        const formattedAuthors = data?.data?.map((author: any) => ({
+          value: author.name,
+          label: author.name,
+        }));
+
+        setAuthorOptions(formattedAuthors);
+      } catch (error) {
+        toast.error("Error fetching authors");
+      }
+    };
+
+    fetchAuthors();
+  }, []);
+
+  // Handle author Change
+  const handleAuthorsChange = (selectedOptions: MultiValue<IAuthor>) => {
+    setSelectedAuthors(selectedOptions || []); // Ensure it's an empty array when no categories are selected
   };
 
   // Handle content change
@@ -55,47 +104,42 @@ const PublishNewPost = () => {
   const onSubmit = async () => {
     const postData = {
       title: title,
-      author: "Admin",
+      description: description,
+      author: selectedAuthors.map((author) => author?.value),
       image: uploadedImageUrl,
       body: content,
       category: selectedCategories.map((cat) => cat?.value),
     };
-    // console.log("postData", postData);
 
     try {
-      // TODO: Replace with server url
-      const res = await axios.post(
-        "https://ismail-codes-portfolio-backend-24.vercel.app/api/v1/blog",
-        postData,
-        { headers: { "Content-Type": "application/json" } }
-      );
-      // console.log("Post created:", res.data);
-      reset(); // Reset the form after submission
-      setContent(""); // Clear the content editor
-      setUploadedImageUrl(""); // Clear the uploaded image URL
-      setSelectedCategories([]); // Clear the selected categories
-      Swal.fire("Success!", "Posted successfully.", "success");
-    } catch (err: unknown) {
-      let errorMessage = "Failed to post."; // Default error message
-
-      // Check if err is an instance of AxiosError or has a message property
-      if (axios.isAxiosError(err) && err.response) {
-        // If using Axios, we can extract a more detailed error message
-        errorMessage = err.response.data?.message || errorMessage; // Fallback to default message
-      } else if (typeof err === "object" && err !== null && "message" in err) {
-        // If err is an object and has a message property
-        errorMessage = (err as { message?: string }).message || errorMessage; // Fallback to default message
-      }
-
-      Swal.fire("Error!", errorMessage, "error");
-      console.error("Error creating post:", errorMessage);
+      const res = await axiosInstance.post("/service", postData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      // reset(); // Reset the form after submission
+      // setContent(""); // Clear the content editor
+      // setUploadedImageUrl(""); // Clear the uploaded image URL
+      // setSelectedCategories([]); // Clear the selected categories
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Service added successfully.",
+        customClass: {
+          title: "custom-title",
+          popup: "custom-popup",
+          icon: "custom-icon",
+          confirmButton: "custom-confirm-btn",
+        },
+      });
+    } catch (error: any) {
+      // console.log(error);
+      handleAxiosError(error, "Failed to post service");
     }
   };
 
   return (
     <div className=" mx-10 my-10 ">
-      <h1 className="text-2xl font-semibold mb-6 text-center text-blue-500 underline underline-offset-4">
-        Add a new service
+      <h1 className="text-2xl font-semibold mb-6 lg:mb-10 text-center text-blue-500 underline underline-offset-8">
+        Post Something New
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -112,6 +156,22 @@ const PublishNewPost = () => {
           />
           {errors.title && (
             <p className="text-red-500 text-sm">{errors.title.message}</p>
+          )}
+        </div>
+
+        {/* Description */}
+        <div>
+          <label className="block font-medium text-white">Description</label>
+          <input
+            type="text"
+            placeholder="Enter a description"
+            className="w-full border border-gray-300 rounded p-2 bg-white"
+            {...register("description", {
+              required: "Description is required",
+            })}
+          />
+          {errors.description && (
+            <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
         </div>
 
@@ -134,6 +194,25 @@ const PublishNewPost = () => {
           )}
         </div>
 
+        {/* Author Selection */}
+        <div>
+          <label className="block font-medium text-white">Author</label>
+          <Select
+            isMulti
+            options={authorOptions}
+            value={selectedAuthors}
+            onChange={handleAuthorsChange}
+            className="basic-multi-select text-black"
+            classNamePrefix="select"
+            placeholder="Select author"
+          />
+          {selectedCategories.length === 0 && (
+            <p className="text-red-500 text-sm">
+              At least one author is required
+            </p>
+          )}
+        </div>
+
         {/* Image Upload Section */}
         <div>
           <label className="block font-medium text-white">
@@ -144,7 +223,19 @@ const PublishNewPost = () => {
             <p className="text-red-500 text-sm">Image is required</p>
           )}
         </div>
-
+        
+        {/* Tags */}
+        <DynamicSelectField
+          label="Tags"
+          placeholder="Select or add tags"
+          options={tags.map((tag) => ({
+            value: tag,
+            label: tag,
+          }))}
+          defaultValue={tags} // Pass defaultValue for prefilled data
+          onChange={setTags}
+        />
+        {/* Content Editor*/}
         <div>
           <label className="block font-medium text-white ">Content</label>
           <RichTextEditor
