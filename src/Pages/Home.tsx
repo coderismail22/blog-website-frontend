@@ -9,9 +9,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await axiosInstance.get(
-          "http://localhost:5000/api/v1/posts"
-        );
+        const res = await axiosInstance.get("/posts");
         const data = res?.data?.data;
 
         // ✅ Step 1: Group posts by category & pick the most recent one

@@ -5,10 +5,13 @@ const NewsSection = ({ post, flexReverse }) => {
   return (
     <div className="md:w-10/12 mx-auto border-t-4 border-black border-b-4 pb-10">
       {/* Category Title */}
-      <div className="flex gap-3 items-center border-b border-black my-5 py-4">
-        <p className="text-3xl">{post.category} </p>
+      <Link
+        to={`/all-posts/${post?.category}`}
+        className="flex gap-3 items-center border-b border-black my-5 py-4"
+      >
+        <p className="text-3xl">{post?.category} </p>
         <FaArrowRight className="text-xl" />
-      </div>
+      </Link>
 
       {/* Layout with alternating flex directions */}
       <div className={`md:flex ${flexReverse ? "flex-row-reverse" : ""}`}>

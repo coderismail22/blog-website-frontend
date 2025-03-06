@@ -9,6 +9,7 @@ import Categories from "@/Pages/Dashboard/Admin/Categories/Categories";
 import PublishNewPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewPost";
 import MyBlogPosts from "@/Pages/Dashboard/Admin/MyBlogPosts/MyBlogPosts";
 import PostDetails from "@/components/PostDetails/PostDetails";
+import AllPosts from "@/Pages/AllPosts/AllPosts";
 // import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "/post-details/:slug",
         element: <PostDetails />,
+      },
+      {
+        path: "/all-posts/:category",
+        element: <AllPosts />,
       },
     ],
   },

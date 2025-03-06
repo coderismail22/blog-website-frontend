@@ -93,7 +93,7 @@ const PostDetails = () => {
         <img src={post?.coverImage} alt="" />
       </div>
 
-      {/* Author */}
+      {/* Author & Publish Date */}
       <div className="lg:w-1/2 px-5 mx-auto">
         <div className="space-y-2 py-5 ">
           <p className="flex text-[12px] gap-2 items-center ">
