@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import "../../../../styles/swal.css";
 import { ICategoryOption, FormData, IAuthor } from "./post.type";
 import DynamicSelectField from "@/components/CustomForm/DynamicSelect";
+import * as Switch from "@radix-ui/react-switch";
 
 const PublishNewPost = () => {
   const {
@@ -23,10 +24,11 @@ const PublishNewPost = () => {
     watch,
   } = useForm<FormData>();
   const title = watch("title", "");
-  const description = watch("description", "");
-  const [tags, setTags] = useState<string[]>([]);
   const [content, setContent] = useState<string>("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [isFeatured, setIsFeatured] = useState<boolean>(false); // Handle isFeatured Toggle
+
   // Categories
   const [selectedCategories, setSelectedCategories] = useState<
     MultiValue<ICategoryOption>
@@ -104,15 +106,19 @@ const PublishNewPost = () => {
   const onSubmit = async () => {
     const postData = {
       title: title,
-      description: description,
-      author: selectedAuthors.map((author) => author?.value),
-      image: uploadedImageUrl,
-      body: content,
+      coverImage: uploadedImageUrl,
+      author: ["123456789101213141522222"],
+      isFeatured,
+      tags,
+      // TODO: Make author dynamic
+      // author: selectedAuthors.map((author) => author?.value),
+      content: content,
       category: selectedCategories.map((cat) => cat?.value),
     };
 
+    console.log(postData);
     try {
-      const res = await axiosInstance.post("/service", postData, {
+      const res = await axiosInstance.post("/posts", postData, {
         headers: { "Content-Type": "application/json" },
       });
       // reset(); // Reset the form after submission
@@ -122,7 +128,7 @@ const PublishNewPost = () => {
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: "Service added successfully.",
+        text: "Post added successfully.",
         customClass: {
           title: "custom-title",
           popup: "custom-popup",
@@ -131,8 +137,8 @@ const PublishNewPost = () => {
         },
       });
     } catch (error: any) {
-      // console.log(error);
-      handleAxiosError(error, "Failed to post service");
+      console.log(error);
+      handleAxiosError(error, "Failed to post.");
     }
   };
 
@@ -156,22 +162,6 @@ const PublishNewPost = () => {
           />
           {errors.title && (
             <p className="text-red-500 text-sm">{errors.title.message}</p>
-          )}
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block font-medium text-white">Description</label>
-          <input
-            type="text"
-            placeholder="Enter a description"
-            className="w-full border border-gray-300 rounded p-2 bg-white"
-            {...register("description", {
-              required: "Description is required",
-            })}
-          />
-          {errors.description && (
-            <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
         </div>
 
@@ -223,7 +213,7 @@ const PublishNewPost = () => {
             <p className="text-red-500 text-sm">Image is required</p>
           )}
         </div>
-        
+
         {/* Tags */}
         <DynamicSelectField
           label="Tags"
@@ -235,6 +225,32 @@ const PublishNewPost = () => {
           defaultValue={tags} // Pass defaultValue for prefilled data
           onChange={setTags}
         />
+
+        {/* isActive Toggle */}
+        <div className="col-span-1">
+          <div className="flex items-center gap-3">
+            <Switch.Root
+              checked={isFeatured}
+              onCheckedChange={setIsFeatured}
+              className={`w-12 h-6 rounded-full relative flex items-center ${
+                isFeatured ? "bg-green-500" : "bg-red-500"
+              } transition-all duration-300`}
+            >
+              <Switch.Thumb
+                className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 transform ${
+                  isFeatured ? "translate-x-[1.5rem]" : "translate-x-0"
+                }`}
+              />
+            </Switch.Root>
+            <span
+              className={`font-medium ${
+                isFeatured ? "text-green-700" : "text-red-700"
+              }`}
+            >
+              {isFeatured ? "Featured" : "Not Featured"}
+            </span>
+          </div>
+        </div>
         {/* Content Editor*/}
         <div>
           <label className="block font-medium text-white ">Content</label>

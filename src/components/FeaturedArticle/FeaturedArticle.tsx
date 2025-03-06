@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const FeaturedArticle = ({ featuredArticle }) => {
   return (
     <Link to={`/news/${featuredArticle.slug}`} className="mb-12 ">
-      <div className="relative aspect-[16/9] mb-4  border border-red-500">
+      <div className="relative aspect-[16/9] mb-4  ">
         <ImageComponent
           src="/default.jpg"
           alt={featuredArticle.title}

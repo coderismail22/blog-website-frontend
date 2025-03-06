@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MdDeleteOutline, MdEdit } from "react-icons/md";
 import { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker"; // Datepicker for filtering dates
 import "react-datepicker/dist/react-datepicker.css"; // Datepicker styles
 import { FaSearch } from "react-icons/fa";
 import axiosInstance from "@/api/axiosInstance.js";
+import { handleAxiosError } from "@/utils/handleAxiosError.js";
 
 // Type definition for a single blog post
 export interface BlogPost {
@@ -36,9 +37,7 @@ const MyBlogPosts = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        "https://ismail-codes-portfolio-backend-24.vercel.app/api/v1/blog"
-      );
+      const { data } = await axiosInstance.get("/posts");
       const posts: BlogPost[] = data?.data;
       setPosts(posts);
     } catch (error) {
@@ -73,12 +72,14 @@ const MyBlogPosts = () => {
       });
 
       if (result.isConfirmed) {
-        await axiosInstance.delete(`/blog/${id}`);
+        await axiosInstance.delete(`/posts/${id}`);
       }
-      Swal.fire("Deleted!", "Your blog post has been deleted.", "success");
+      Swal.fire("Deleted!", "Your  post has been deleted.", "success");
       fetchPosts();
-    } catch (error) {
-      Swal.fire("Error!", "Failed to delete blog post.", "error");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: AxiosError | any) {
+      console.log(error)
+      handleAxiosError(error, "Failed to delete post.");
     }
   };
 
@@ -113,7 +114,7 @@ const MyBlogPosts = () => {
   const filteredBlogPosts = posts.filter((blog) => {
     const matchesSearch =
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      blog.body.toLowerCase().includes(searchQuery.toLowerCase());
+      blog.content.toLowerCase().includes(searchQuery.toLowerCase());
 
     const blogDate = moment(blog.createdAt);
     const matchesDateRange =
@@ -164,7 +165,7 @@ const MyBlogPosts = () => {
         </div>
 
         {/* Date Filters */}
-        {/* <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
           <div className="relative w-full md:w-auto">
             <DatePicker
               selected={startDate}
@@ -183,7 +184,7 @@ const MyBlogPosts = () => {
               isClearable
             />
           </div>
-        </div> */}
+        </div>
       </div>
 
       {filteredBlogPosts.length === 0 ? (
@@ -192,7 +193,7 @@ const MyBlogPosts = () => {
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredBlogPosts.slice(0, visiblePosts).map((blog) => (
+          {filteredBlogPosts?.slice(0, visiblePosts)?.map((blog) => (
             <div
               key={blog._id}
               className="font-notoserifbangla p-4 border border-gray-200 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-white"
@@ -202,10 +203,10 @@ const MyBlogPosts = () => {
                 {blog.title}
               </div>
               {/* Post Cover Image */}
-              {blog.image && (
+              {blog?.coverImage && (
                 <img
-                  src={blog.image}
-                  alt={blog.title}
+                  src={blog?.coverImage}
+                  alt={blog?.title}
                   className="w-full h-40 object-cover rounded-md mb-4"
                 />
               )}
@@ -214,8 +215,8 @@ const MyBlogPosts = () => {
                 <p
                   dangerouslySetInnerHTML={{
                     __html:
-                      blog.body.substring(0, 100) +
-                      (blog.body.length > 100 ? "..." : ""),
+                      blog?.content.substring(0, 100) +
+                      (blog?.content.length > 100 ? "..." : ""),
                   }}
                   className="text-gray-600 text-sm md:text-base mb-4"
                 ></p>

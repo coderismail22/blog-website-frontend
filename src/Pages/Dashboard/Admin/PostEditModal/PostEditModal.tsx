@@ -4,23 +4,96 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
+import Select, { MultiValue } from "react-select";
+import { toast } from "sonner";
+import { ICategoryOption, IAuthor } from "./post.type"; // Assuming you already have types for these
+import * as Switch from "@radix-ui/react-switch";
+import axiosInstance from "@/api/axiosInstance";
 
 const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
   const [title, setTitle] = useState(post.title || "");
-  const [body, setBody] = useState(post.body || "");
+  const [body, setBody] = useState(post.content || "");
   const [uploadedImageUrl, setUploadedImageUrl] = useState(post.imgUrl || "");
+  const [isFeatured, setIsFeatured] = useState(post.isFeatured || false);
+  const [tags, setTags] = useState<string[]>(post.tags || []);
+
+  // Categories and authors state
+  const [selectedCategories, setSelectedCategories] = useState<
+    MultiValue<ICategoryOption>
+  >([]);
+  const [categoriesOptions, setCategoriesOptions] = useState<ICategoryOption[]>(
+    []
+  );
+  const [selectedAuthors, setSelectedAuthors] = useState<MultiValue<IAuthor>>(
+    []
+  );
+  const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axiosInstance.get("/categories");
+        const formattedCategories = data?.data?.map((category: any) => ({
+          value: category.name,
+          label: category.name,
+        }));
+        setCategoriesOptions(formattedCategories);
+        console.log(formattedCategories);
+      } catch (error) {
+        toast.error("Error fetching categories:");
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Handle category change
+  const handleCategoriesChange = (
+    selectedOptions: MultiValue<ICategoryOption>
+  ) => {
+    setSelectedCategories(selectedOptions || []);
+  };
+
+  // Fetch authors
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const { data } = await axios.get("/author");
+        const formattedAuthors = data?.data?.map((author: any) => ({
+          value: author.name,
+          label: author.name,
+        }));
+        setAuthorOptions(formattedAuthors);
+      } catch (error) {
+        toast.error("Error fetching authors");
+      }
+    };
+    fetchAuthors();
+  }, []);
+
+  // Handle author change
+  const handleAuthorsChange = (selectedOptions: MultiValue<IAuthor>) => {
+    setSelectedAuthors(selectedOptions || []);
+  };
 
   //child to parent state lifting
   const handleContentChange = (newContent: any) => {
     setBody(newContent); // Update the state in the parent
   };
 
-  // const editorRef = useRef(null);
-
   useEffect(() => {
+    if (post) {
+      // Ensure preselected values are in the correct format
+      setSelectedCategories(
+        post.category?.map((cat: string) => ({
+          value: cat,
+          label: cat,
+        })) || []
+      );
+    }
     setTitle(post.title || "");
-    setBody(post.body || "");
-    setUploadedImageUrl(post.image || "");
+    setBody(post.content || "");
+    setUploadedImageUrl(post.coverImage || "");
   }, [post]);
 
   const handleUpdate = async () => {
@@ -31,10 +104,7 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
     };
     try {
       // TODO: Add Server Url
-      await axios.patch(
-        `https://ismail-codes-portfolio-backend-24.vercel.app/api/v1/blog/${post._id}`,
-        updatedPostData
-      );
+      await axiosInstance.patch(`/posts/${post._id}`, updatedPostData);
       Swal.fire("Success!", "Post updated successfully.", "success");
       onPostUpdate();
       onClose(); // Close the modal
@@ -52,12 +122,40 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
 
         {/* Title */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Title</label>
+          <label className="block text-sm font-medium mb-1 ">Title</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded p-2"
+            className="w-full border border-gray-300 rounded p-2 bg-white"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+
+        {/* Category Selection */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Category</label>
+          <Select
+            isMulti
+            options={categoriesOptions}
+            value={selectedCategories}
+            onChange={handleCategoriesChange}
+            className="basic-multi-select text-black"
+            classNamePrefix="select"
+            placeholder="Select Categories"
+          />
+        </div>
+
+        {/* Author Selection */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Author</label>
+          <Select
+            isMulti
+            options={authorOptions}
+            value={selectedAuthors}
+            onChange={handleAuthorsChange}
+            className="basic-multi-select text-black"
+            classNamePrefix="select"
+            placeholder="Select author"
           />
         </div>
 
@@ -70,6 +168,36 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
           {uploadedImageUrl === "" && (
             <p className="text-red-500 text-sm">Image is required</p>
           )}
+        </div>
+
+        {/* Tags */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Tags</label>
+          {/* Implement Dynamic Select for Tags similar to PublishNewPost */}
+        </div>
+
+        {/* Featured Toggle */}
+        <div className="mb-4 flex items-center gap-3">
+          <Switch.Root
+            checked={isFeatured}
+            onCheckedChange={setIsFeatured}
+            className={`w-12 h-6 rounded-full relative flex items-center ${
+              isFeatured ? "bg-green-500" : "bg-red-500"
+            } transition-all duration-300`}
+          >
+            <Switch.Thumb
+              className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 transform ${
+                isFeatured ? "translate-x-[1.5rem]" : "translate-x-0"
+              }`}
+            />
+          </Switch.Root>
+          <span
+            className={`font-medium ${
+              isFeatured ? "text-green-700" : "text-red-700"
+            }`}
+          >
+            {isFeatured ? "Featured" : "Not Featured"}
+          </span>
         </div>
 
         {/* Content Editor */}
