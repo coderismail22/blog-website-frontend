@@ -26,7 +26,7 @@ const AppDashboard = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const role = user?.role as "admin" | "superAdmin";
+  const role = user?.role as "admin" | "superAdmin" | "user";
 
   const handleLogout = () => {
     dispatch(logout());

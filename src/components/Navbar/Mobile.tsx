@@ -1,7 +1,18 @@
+import { useDispatch, useSelector } from "react-redux";
 import SidebarForNavbar from "./SidebarForNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { RootState } from "@/redux/store";
+import { logout } from "@/redux/slices/authSlice";
 
 const Mobile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <div>
       <div>
@@ -14,11 +25,13 @@ const Mobile = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* <Button className="bg-red-600 text-sm font-bold">
-              Join: $1.50/wk
-            </Button> */}
-            <p className="text-sm">Sign In</p>
-            {/* <FiSearch className="text-xl" /> */}
+            <div className="flex items-center gap-3">
+              {user ? (
+                <Link to="/dashboard">Dashboard</Link>
+              ) : (
+                <Link to="/login">Login</Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

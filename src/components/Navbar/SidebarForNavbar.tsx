@@ -1,22 +1,24 @@
-import { Drawer, Sidebar, TextInput } from "flowbite-react";
+import { Drawer, Sidebar } from "flowbite-react";
 import { useState } from "react";
-import {
-  HiChartPie,
-  HiClipboard,
-  HiCollection,
-  HiInformationCircle,
-  HiLogin,
-  HiPencil,
-  HiSearch,
-  HiShoppingBag,
-  HiUsers,
-} from "react-icons/hi";
+import { HiChartPie, HiLogin } from "react-icons/hi";
 import { MdOutlineMenu } from "react-icons/md";
-
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { logout } from "@/redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 const SidebarForNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClose = () => setIsOpen(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <>
       <div className="">
@@ -43,7 +45,7 @@ const SidebarForNavbar = () => {
           >
             <div className="flex h-full flex-col justify-between py-2">
               <div>
-                <form className="pb-3 md:hidden">
+                {/* <form className="pb-3 md:hidden">
                   <TextInput
                     icon={HiSearch}
                     type="search"
@@ -52,67 +54,35 @@ const SidebarForNavbar = () => {
                     size={32}
                     className="text-white"
                   />
-                </form>
+                </form> */}
                 <Sidebar.Items className="text-white">
                   <Sidebar.ItemGroup className="text-white">
-                    <Sidebar.Item
-                      href="/"
-                      icon={HiChartPie}
-                      className="text-white"
-                    >
-                      Dashboard
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/e-commerce/products"
-                      icon={HiShoppingBag}
-                      className="text-white"
-                    >
-                      Products
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/users/list"
-                      icon={HiUsers}
-                      className="text-white"
-                    >
-                      Users list
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/authentication/sign-in"
-                      icon={HiLogin}
-                      className="text-white"
-                    >
-                      Sign in
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="/authentication/sign-up"
-                      icon={HiPencil}
-                      className="text-white"
-                    >
-                      Sign up
-                    </Sidebar.Item>
-                  </Sidebar.ItemGroup>
-                  <Sidebar.ItemGroup className="text-white">
-                    <Sidebar.Item
-                      href="https://github.com/themesberg/flowbite-react/"
-                      icon={HiClipboard}
-                      className="text-white"
-                    >
-                      Docs
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="https://flowbite-react.com/"
-                      icon={HiCollection}
-                      className="text-white"
-                    >
-                      Components
-                    </Sidebar.Item>
-                    <Sidebar.Item
-                      href="https://github.com/themesberg/flowbite-react/issues"
-                      icon={HiInformationCircle}
-                      className="text-white"
-                    >
-                      Help
-                    </Sidebar.Item>
+                    {user ? (
+                      <div>
+                        <Sidebar.Item
+                          href="/dashboard"
+                          icon={HiChartPie}
+                          className="text-white hover:text-black"
+                        >
+                          Dashboard
+                        </Sidebar.Item>
+                        <Sidebar.Item
+                          icon={LogOut}
+                          className="text-white hover:text-black"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </Sidebar.Item>
+                      </div>
+                    ) : (
+                      <Sidebar.Item
+                        href="/login"
+                        icon={HiLogin}
+                        className="text-white hover:text-black"
+                      >
+                        Sign in
+                      </Sidebar.Item>
+                    )}
                   </Sidebar.ItemGroup>
                 </Sidebar.Items>
               </div>
