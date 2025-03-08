@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import GoogleTranslate from "@/components/GoogleTranslate/GoogleTranslate";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { useEffect, useState } from "react";
 
@@ -70,11 +71,13 @@ const HomePage = () => {
         <p className="text-center text-lg">Loading...</p>
       ) : (
         newsSections.map((section, index) => (
-          <NewsSection
-            key={section._id}
-            post={section}
-            flexReverse={index % 2 !== 0}
-          />
+          <div>
+            <NewsSection
+              key={section._id}
+              post={section}
+              flexReverse={index % 2 !== 0}
+            />
+          </div>
         ))
       )}
     </div>

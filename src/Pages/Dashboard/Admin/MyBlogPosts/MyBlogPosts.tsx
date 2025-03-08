@@ -73,12 +73,12 @@ const MyBlogPosts = () => {
 
       if (result.isConfirmed) {
         await axiosInstance.delete(`/posts/${id}`);
+        Swal.fire("Deleted!", "Your  post has been deleted.", "success");
       }
-      Swal.fire("Deleted!", "Your  post has been deleted.", "success");
       fetchPosts();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: AxiosError | any) {
-      console.log(error)
+      console.log(error);
       handleAxiosError(error, "Failed to delete post.");
     }
   };
@@ -233,8 +233,7 @@ const MyBlogPosts = () => {
               </p>
               {/* Categories */}
               <p className="text-gray-500 text-sm">
-                <span className="font-bold">Categories:</span>{" "}
-                {blog.category.join(", ")}
+                <span className="font-bold">Categories:</span> {blog?.category}
               </p>
               <hr className="my-4" />
               {/* Edit and Delete Button */}

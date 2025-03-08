@@ -4,9 +4,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
-import Select, { MultiValue } from "react-select";
+import Select from "react-select";
 import { toast } from "sonner";
-import { ICategoryOption, IAuthor } from "./post.type"; // Assuming you already have types for these
+import { ICategoryOption, IAuthor } from "./post.type";
 import * as Switch from "@radix-ui/react-switch";
 import axiosInstance from "@/api/axiosInstance";
 
@@ -17,16 +17,11 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
   const [isFeatured, setIsFeatured] = useState(post.isFeatured || false);
   const [tags, setTags] = useState<string[]>(post.tags || []);
 
-  // Categories and authors state
-  const [selectedCategories, setSelectedCategories] = useState<
-    MultiValue<ICategoryOption>
-  >([]);
-  const [categoriesOptions, setCategoriesOptions] = useState<ICategoryOption[]>(
-    []
-  );
-  const [selectedAuthors, setSelectedAuthors] = useState<MultiValue<IAuthor>>(
-    []
-  );
+  // Category and Author state (Single Selection)
+  const [selectedCategory, setSelectedCategory] =
+    useState<ICategoryOption | null>(null);
+  const [categoryOptions, setCategoryOptions] = useState<ICategoryOption[]>([]);
+  const [selectedAuthor, setSelectedAuthor] = useState<IAuthor | null>(null);
   const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
 
   // Fetch categories
@@ -38,27 +33,19 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
           value: category.name,
           label: category.name,
         }));
-        setCategoriesOptions(formattedCategories);
-        console.log(formattedCategories);
+        setCategoryOptions(formattedCategories);
       } catch (error) {
-        toast.error("Error fetching categories:");
+        toast.error("Error fetching categories");
       }
     };
     fetchCategories();
   }, []);
 
-  // Handle category change
-  const handleCategoriesChange = (
-    selectedOptions: MultiValue<ICategoryOption>
-  ) => {
-    setSelectedCategories(selectedOptions || []);
-  };
-
   // Fetch authors
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const { data } = await axios.get("/author");
+        const { data } = await axiosInstance.get("/author");
         const formattedAuthors = data?.data?.map((author: any) => ({
           value: author.name,
           label: author.name,
@@ -71,24 +58,14 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
     fetchAuthors();
   }, []);
 
-  // Handle author change
-  const handleAuthorsChange = (selectedOptions: MultiValue<IAuthor>) => {
-    setSelectedAuthors(selectedOptions || []);
-  };
-
-  //child to parent state lifting
-  const handleContentChange = (newContent: any) => {
-    setBody(newContent); // Update the state in the parent
-  };
-
+  // Pre-fill selected category and author from the post
   useEffect(() => {
     if (post) {
-      // Ensure preselected values are in the correct format
-      setSelectedCategories(
-        post.category?.map((cat: string) => ({
-          value: cat,
-          label: cat,
-        })) || []
+      setSelectedCategory(
+        post.category ? { value: post.category, label: post.category } : null
+      );
+      setSelectedAuthor(
+        post.author ? { value: post.author, label: post.author } : null
       );
     }
     setTitle(post.title || "");
@@ -96,18 +73,36 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
     setUploadedImageUrl(post.coverImage || "");
   }, [post]);
 
+  // Handle category change
+  const handleCategoryChange = (selectedOption: ICategoryOption | null) => {
+    setSelectedCategory(selectedOption);
+  };
+
+  // Handle author change
+  const handleAuthorChange = (selectedOption: IAuthor | null) => {
+    setSelectedAuthor(selectedOption);
+  };
+
+  // Handle content change from editor
+  const handleContentChange = (newContent: any) => {
+    setBody(newContent);
+  };
+
   const handleUpdate = async () => {
     const updatedPostData = {
       title,
       body,
       image: uploadedImageUrl,
+      category: selectedCategory?.value || "",
+      author: selectedAuthor?.value || "",
+      isFeatured,
+      tags,
     };
     try {
-      // TODO: Add Server Url
       await axiosInstance.patch(`/posts/${post._id}`, updatedPostData);
       Swal.fire("Success!", "Post updated successfully.", "success");
       onPostUpdate();
-      onClose(); // Close the modal
+      onClose();
     } catch (error) {
       Swal.fire("Error!", "Failed to update post.", "error");
     }
@@ -122,7 +117,7 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
 
         {/* Title */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1 ">Title</label>
+          <label className="block text-sm font-medium mb-1">Title</label>
           <input
             type="text"
             className="w-full border border-gray-300 rounded p-2 bg-white"
@@ -135,13 +130,12 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Category</label>
           <Select
-            isMulti
-            options={categoriesOptions}
-            value={selectedCategories}
-            onChange={handleCategoriesChange}
-            className="basic-multi-select text-black"
+            options={categoryOptions}
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            className="basic-single text-black"
             classNamePrefix="select"
-            placeholder="Select Categories"
+            placeholder="Select Category"
           />
         </div>
 
@@ -149,13 +143,12 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Author</label>
           <Select
-            isMulti
             options={authorOptions}
-            value={selectedAuthors}
-            onChange={handleAuthorsChange}
-            className="basic-multi-select text-black"
+            value={selectedAuthor}
+            onChange={handleAuthorChange}
+            className="basic-single text-black"
             classNamePrefix="select"
-            placeholder="Select author"
+            placeholder="Select Author"
           />
         </div>
 
@@ -209,16 +202,14 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
           />
         </div>
 
-        {/* Confirmation Button */}
+        {/* Confirmation Buttons */}
         <div className="flex justify-end space-x-4">
-          {/* Save Button */}
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() => handleUpdate()}
+            onClick={handleUpdate}
           >
             Save Changes
           </button>
-          {/* Cancel Button */}
           <button
             className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             onClick={onClose}

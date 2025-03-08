@@ -1,14 +1,11 @@
 import axiosInstance from "@/api/axiosInstance";
 import Loader from "../Loader/Loader";
-import mainImg from "/mainNews.webp";
-import subImg from "/subNews.webp";
-import { IoIosBookmark, IoMdShare } from "react-icons/io";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PersonIcon } from "@radix-ui/react-icons";
-import { Calendar, LucideCalendarDays } from "lucide-react";
-import { BiCalendar } from "react-icons/bi";
+import { LucideCalendarDays } from "lucide-react";
 import moment from "moment-timezone";
+import SimilarPostsAutomatic from "../SimilarPostsAutomatic/SimilarPostsAutomatic";
 
 const PostDetails = () => {
   const { slug } = useParams();
@@ -115,32 +112,10 @@ const PostDetails = () => {
           ></p>
         </div>
 
-        {/* Similar Posts */}
-        <p className="border-y text-center text-sm uppercase font-bold">
-          You may also explore
-        </p>
-        <div className="flex border-5 items-center justify-center">
-          {similarPosts?.slice(0, 3).map((similarPost) => (
-            <div key={similarPost._id} className="md:border-r mr-3 mt-3">
-              <div className="gap-1 pb-4 mt-5">
-                <div className="w-full">
-                  <img
-                    src={similarPost.coverImage}
-                    className="w-20 h-20 object-cover object-center"
-                    alt="Image"
-                  />
-                </div>
-                <div className="w-[70%]">
-                  <p className="text-[12px] font-semibold">
-                    <Link to={`/post-details/${similarPost.slug}`}>
-                      {similarPost.title}
-                    </Link>
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* SimlarPosts (Automatic) */}
+        <SimilarPostsAutomatic similarPosts={similarPosts} />
+
+        
       </div>
     </div>
   );
