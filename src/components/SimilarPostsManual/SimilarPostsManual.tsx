@@ -2,7 +2,7 @@
 // TODO: Add types here
 import { Link } from "react-router-dom";
 
-const SimilarPostsAutomatic = ({ similarPosts }: any) => {
+const SimilarPostsManual = ({ similarPosts }: any) => {
   return (
     <div>
       {similarPosts?.length > 0 && (
@@ -38,4 +38,4 @@ const SimilarPostsAutomatic = ({ similarPosts }: any) => {
   );
 };
 
-export default SimilarPostsAutomatic;
+export default SimilarPostsManual;

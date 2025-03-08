@@ -6,6 +6,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { LucideCalendarDays } from "lucide-react";
 import moment from "moment-timezone";
 import SimilarPostsAutomatic from "../SimilarPostsAutomatic/SimilarPostsAutomatic";
+import SimilarPostsManual from "../SimilarPostsManual/SimilarPostsManual";
 
 const PostDetails = () => {
   const { slug } = useParams();
@@ -115,7 +116,8 @@ const PostDetails = () => {
         {/* SimlarPosts (Automatic) */}
         <SimilarPostsAutomatic similarPosts={similarPosts} />
 
-        
+        {/* Similar/Related Post(Manually) */}
+        {/* <SimilarPostsManual similarPosts={post?.relatedPosts} /> */}
       </div>
     </div>
   );
