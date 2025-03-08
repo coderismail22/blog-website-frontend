@@ -47,11 +47,10 @@ const Login = () => {
       navigate("/dashboard");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log("🚀 ~ onSubmit ~ err:", err)
+      console.log("🚀 ~ onSubmit ~ err:", err);
       setError(
         err.response?.data?.message || "Login failed. Please try again."
       );
-      
     } finally {
       setLoading(false);
     }
@@ -100,6 +99,10 @@ const Login = () => {
             labelStyles="text-white"
             placeholder="Enter your password"
           />
+          <Link to="/register" className="block text-blue-400 text-center">
+            Don't have an account?{" "}
+            <span className="underline underline-offset-4">Register Now.</span>
+          </Link>
         </AppForm>
       </div>
     </div>

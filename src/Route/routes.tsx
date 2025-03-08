@@ -10,6 +10,8 @@ import PublishNewPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewPos
 import MyBlogPosts from "@/Pages/Dashboard/Admin/MyBlogPosts/MyBlogPosts";
 import PostDetails from "@/components/PostDetails/PostDetails";
 import AllPosts from "@/Pages/AllPosts/AllPosts";
+import Register from "@/components/Auth/Register/Register";
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 // import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
@@ -33,9 +35,9 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      // <ProtectedRoute>
-      <Dashboard />
-      // </ProtectedRoute>
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
     ),
     children: [
       // Role: Admin
@@ -50,6 +52,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "*",

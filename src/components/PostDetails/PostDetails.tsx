@@ -45,7 +45,6 @@ const PostDetails = () => {
       try {
         const response = await axiosInstance.get(`/posts/${post?._id}/similar`);
         const similarPosts = response?.data?.data;
-        console.log("🚀 ~ fetchSimilarPosts ~ similarPosts:", similarPosts);
 
         setSimilarPosts(similarPosts);
       } catch (err) {
@@ -114,7 +113,7 @@ const PostDetails = () => {
         </div>
 
         {/* SimlarPosts (Automatic) */}
-        <SimilarPostsAutomatic similarPosts={similarPosts} />
+        {/* <SimilarPostsAutomatic similarPosts={similarPosts} /> */}
 
         {/* Similar/Related Post(Manually) */}
         {/* <SimilarPostsManual similarPosts={post?.relatedPosts} /> */}

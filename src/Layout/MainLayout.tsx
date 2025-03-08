@@ -1,7 +1,7 @@
 import MoveToTop from "@/components/MoveToTop/MoveToTop";
+import Navbar from "@/components/Navbar/Navbar";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import Footer from "@/components/Shared/Footer";
-import Navbar from "@/components/Shared/Navbar";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {

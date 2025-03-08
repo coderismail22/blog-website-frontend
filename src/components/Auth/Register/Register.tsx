@@ -1,116 +1,91 @@
-import { useMutation } from "@tanstack/react-query";
-import AppForm from "@/components/CustomForm/AppForm";
-import AppInput from "@/components/CustomForm/AppInput";
-import AppInputPassword from "@/components/CustomForm/AppInputPassword";
-import { registerSchema } from "@/schemas/register.schema";
-import { TRegisterForm } from "@/types/register.type";
-import axiosInstance from "@/api/axiosInstance";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import { useLogin } from "@/hooks/useLogin";
-import LoaderWithBlurBG from "@/components/Loader/LoaderWithBlurBG";
-import { AxiosError } from "axios";
-import { handleAxiosError } from "@/utils/handleAxiosError";
-import "../../../styles/swal.css";
+import { Link, useNavigate } from "react-router-dom";
+import AppForm from "../../CustomForm/AppForm";
+import AppInput from "../../CustomForm/AppInput";
+import AppInputPassword from "../../CustomForm/AppInputPassword";
 import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
+import { login } from "../../../redux/slices/authSlice";
+import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import axiosInstance from "@/api/axiosInstance";
+import { handleAxiosError } from "@/utils/handleAxiosError";
+
 const Register = () => {
-  const loginMutation = useLogin();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const registerMutation = useMutation({
-    mutationFn: async (formData: Partial<TRegisterForm>) => {
-      const response = await axiosInstance.post(
-        "/users/create-student",
-        formData
-      );
-      return response.data;
-    },
-    onSuccess: (_data, variables) => {
-      // Automatically log in after registration
-      loginMutation.mutate(
-        {
-          email: variables.email as string,
-          password: variables.password as string,
-        },
-        {
-          onSuccess: () => {
-            Swal.fire({
-              icon: "success",
-              title: "Registration Successful",
-              text: "Welcome!",
-              customClass: {
-                title: "custom-title",
-                popup: "custom-popup",
-                icon: "custom-icon",
-                confirmButton: "custom-confirm-btn",
-              },
-            });
-          },
-          onError: () => {
-            Swal.fire({
-              icon: "error",
-              title: "Auto Login Failed",
-              text: "Please log in manually.",
-              customClass: {
-                title: "custom-title",
-                popup: "custom-popup",
-                icon: "custom-icon",
-                confirmButton: "custom-confirm-btn",
-              },
-            });
-          },
-        }
-      );
-    },
-    onError: (error: AxiosError) => {
-      handleAxiosError(error, "Registration Failed");
-    },
-  });
+  const onSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    setLoading(true);
+    setError("");
+    console.log("🚀 ~ Register ~ data:", data);
 
-  const onSubmit = (data: TRegisterForm) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...restFormData } = data;
-    registerMutation.mutate(restFormData);
+    try {
+      const response = await axiosInstance.post("/auth/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      const accessToken = response?.data?.data?.accessToken;
+      const refreshToken = response?.data?.data?.refreshToken;
+
+      // Store tokens
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Decode user token
+      const decodedUser = jwtDecode<{ role: string; email: string }>(
+        accessToken
+      );
+      const actualUserData = {
+        role: decodedUser?.role as string,
+        email: decodedUser?.email as string,
+      };
+
+      dispatch(login({ user: actualUserData }));
+      navigate("/dashboard");
+    } catch (err: any) {
+      console.log("🚀 ~ onSubmit ~ err:", err);
+      handleAxiosError(err, "Registration Failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (registerMutation.isPending)
-    return <LoaderWithBlurBG loadingText="Getting things ready for you !" />;
-
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black">
       <Helmet>
-        <title>BlueBirdSchool | Register</title>
+        <title>Aisasx | Register</title>
       </Helmet>
-      <div className="w-full max-w-sm p-6 sm:p-8 bg-gray-800 shadow-lg rounded-lg border border-gray-700">
+      <div className="w-full max-w-sm p-8 bg-gray-800 shadow-lg rounded-lg border border-gray-700">
         <div className="flex flex-col items-center justify-center mb-2">
           <Link to="/">
-            <img
-              className="w-16 sm:w-20"
-              src="/ejobsit-logo.svg"
-              alt="Ejobsit"
-            />
+            <img className="w-20" src="/logo.png" alt="Logo" />
           </Link>
         </div>
-        <h2 className="text-xl font-bold text-center text-gray-100 mb-6">
+        <h2 className="text-xl font-bold text-center text-gray-100 mb-4">
           Create Your Account
         </h2>
+
+        {error && (
+          <p className="text-red-500 text-center text-sm mb-4">{error}</p>
+        )}
+
         <AppForm
-          schema={registerSchema}
           onSubmit={onSubmit}
-          buttonText={
-            registerMutation.isPending ? "Registering..." : "Register"
-          }
-          submitButtonStyles="w-full py-2 mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md"
-          defaultValues={{
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          }}
+          buttonText={loading ? "Registering..." : "Register"}
+          submitButtonStyles="bg-blue-500 hover:bg-blue-600 text-white"
+          defaultValues={{ name: "", email: "", password: "" }}
         >
-          {/* Full Name */}
           <div className="mb-4">
             <AppInput
-              className="w-full bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mb-4 bg-[#2D394B] border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
               name="name"
               label="Full Name"
               labelStyles="text-white"
@@ -118,10 +93,9 @@ const Register = () => {
             />
           </div>
 
-          {/* Email */}
           <div className="mb-4">
             <AppInput
-              className="w-full bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
+              className="w-full mb-4 bg-[#2D394B] border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
               name="email"
               label="Email"
               labelStyles="text-white"
@@ -129,7 +103,6 @@ const Register = () => {
             />
           </div>
 
-          {/* Password */}
           <AppInputPassword
             className="w-full mb-4 bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
             name="password"
@@ -138,21 +111,11 @@ const Register = () => {
             placeholder="Enter your password"
           />
 
-          {/* Confirm Password */}
-          <AppInputPassword
-            className="w-full mb-4 bg-gray-700 border border-gray-600 text-gray-300 placeholder-gray-400 focus:ring focus:ring-blue-500 focus:border-blue-500"
-            name="confirmPassword"
-            label="Confirm Password"
-            labelStyles="text-white"
-            placeholder="Confirm your password"
-          />
-        </AppForm>
-        <div className="text-sm flex gap-1 mt-4 items-center justify-center text-gray-400">
-          <p>Already have an account?</p>
-          <Link to="/auth/login" className="text-blue-400 hover:underline">
-            Sign in
+          <Link to="/login" className="block text-blue-400 text-center">
+            Already have an account?{" "}
+            <span className="underline underline-offset-4">Login here.</span>
           </Link>
-        </div>
+        </AppForm>
       </div>
     </div>
   );

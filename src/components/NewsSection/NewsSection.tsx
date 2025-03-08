@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const NewsSection = ({ post, flexReverse }) => {
   return (
-    <div className="md:w-10/12 mx-auto border-t-4 border-black border-b-4 pb-10">
+    <div className="md:w-10/12 mx-auto pb-10">
       {/* Category Title */}
       <Link
         to={`/all-posts/${post?.category}`}
