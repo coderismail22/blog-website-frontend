@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import ArticleCounter from "@/components/ArticleCounter/ArticleCounter";
 import Banner from "@/components/Banner/Banner";
 import BreakingNews from "@/components/BreakingNews/BreakingNews";
 import NewsSection from "@/components/NewsSection/NewsSection";
@@ -85,25 +86,28 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="hidden md:block">
-        <BreakingNews />
+    <>
+      <div className="container mx-auto p-4">
+        <div className="hidden md:block">
+          <BreakingNews />
+        </div>
+        <div>
+          <Banner />
+        </div>{" "}
+        <ArticleCounter count={10} />
+        {loading ? (
+          <p className="text-center text-lg">Loading...</p>
+        ) : newsSections.length === 0 ? (
+          <p className="text-center text-lg my-10">No posts to show</p>
+        ) : (
+          newsSections.map((section, index) => (
+            <div key={section._id}>
+              <NewsSection post={section} flexReverse={index % 2 !== 0} />
+            </div>
+          ))
+        )}
       </div>
-      <div>
-        <Banner />
-      </div>
-      {loading ? (
-        <p className="text-center text-lg">Loading...</p>
-      ) : newsSections.length === 0 ? (
-        <p className="text-center text-lg my-10">No posts to show</p>
-      ) : (
-        newsSections.map((section, index) => (
-          <div key={section._id}>
-            <NewsSection post={section} flexReverse={index % 2 !== 0} />
-          </div>
-        ))
-      )}
-    </div>
+    </>
   );
 };
 
