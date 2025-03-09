@@ -1,11 +1,10 @@
 import axiosInstance from "@/api/axiosInstance";
 import Loader from "../Loader/Loader";
-import { Link, ScrollRestoration, useParams } from "react-router-dom";
+import { ScrollRestoration, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { LucideCalendarDays } from "lucide-react";
 import moment from "moment-timezone";
-import SimilarPostsAutomatic from "../SimilarPostsAutomatic/SimilarPostsAutomatic";
 import SimilarPostsManual from "../SimilarPostsManual/SimilarPostsManual";
 
 const PostDetails = () => {
@@ -116,7 +115,7 @@ const PostDetails = () => {
         {/* <SimilarPostsAutomatic similarPosts={similarPosts} /> */}
 
         {/* Similar/Related Post(Manually) */}
-        {/* <SimilarPostsManual similarPosts={post?.relatedPosts} /> */}
+        <SimilarPostsManual similarPosts={post?.relatedPosts} />
       </div>
     </div>
   );

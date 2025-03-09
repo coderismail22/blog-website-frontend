@@ -43,6 +43,22 @@ const PublishNewPost = () => {
   );
   const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
 
+  // Related Posts
+  const [selectedRelatedPosts, setSelectedRelatedPosts] = useState<
+    MultiValue<ICategoryOption>
+  >([]);
+  const [relatedPostsOptions, setRelatedPostsOptions] = useState<
+    ICategoryOption[]
+  >([]);
+
+  // Sidebar Posts
+  const [selectedSidebarPosts, setSelectedSidebarPosts] = useState<
+    MultiValue<ICategoryOption>
+  >([]);
+  const [sidebarPostsOptions, setRelatedSidebarOptions] = useState<
+    ICategoryOption[]
+  >([]);
+
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -52,8 +68,8 @@ const PublishNewPost = () => {
         // Transform data to match react-select format
         // TODO: Add a type here
         const formattedCategories = data?.data?.map((category: any) => ({
-          value: category.name,
-          label: category.name,
+          value: category?._id,
+          label: category?.name,
         }));
 
         setCategoriesOptions(formattedCategories);
@@ -66,10 +82,66 @@ const PublishNewPost = () => {
   }, []);
 
   // Handle Category Change
-  const handleCategoriesChange = (
+  const handleCategoriesChange = (selectedOptions: ICategoryOption | null) => {
+    setSelectedCategories(selectedOptions);
+  };
+
+  // Fetch related posts
+  useEffect(() => {
+    const fetchRelatedPosts = async () => {
+      try {
+        const { data } = await axiosInstance.get("/posts");
+
+        // Transform data to match react-select format
+        // TODO: Add a type here
+        const formattedRelatedPosts = data?.data?.map((category: any) => ({
+          value: category?._id,
+          label: category.title,
+        }));
+
+        setRelatedPostsOptions(formattedRelatedPosts);
+      } catch (error) {
+        toast.error("Error fetching categories:");
+      }
+    };
+
+    fetchRelatedPosts();
+  }, []);
+
+  // Handle related posts Change
+  const handleRelatedPostsChange = (
     selectedOptions: MultiValue<ICategoryOption>
   ) => {
-    setSelectedCategories(selectedOptions || []); // Ensure it's an empty array when no categories are selected
+    setSelectedRelatedPosts(selectedOptions || []); // Ensure it's an empty array when no categories are selected
+  };
+
+  // Fetch sidebar posts
+  useEffect(() => {
+    const fetchSidebarPosts = async () => {
+      try {
+        const { data } = await axiosInstance.get("/posts");
+
+        // Transform data to match react-select format
+        // TODO: Add a type here
+        const formattedSidebarPosts = data?.data?.map((category: any) => ({
+          value: category?._id,
+          label: category.title,
+        }));
+
+        setRelatedSidebarOptions(formattedSidebarPosts);
+      } catch (error) {
+        toast.error("Error fetching sidebar posts:");
+      }
+    };
+
+    fetchSidebarPosts();
+  }, []);
+
+  // Handle sidebar posts change
+  const handleSidebarPostsChange = (
+    selectedOptions: MultiValue<ICategoryOption>
+  ) => {
+    setSelectedSidebarPosts(selectedOptions || []); // Ensure it's an empty array when no categories are selected
   };
 
   // Fetch authors
@@ -107,13 +179,15 @@ const PublishNewPost = () => {
     const postData = {
       title: title,
       coverImage: uploadedImageUrl,
-      author: ["123456789101213141522222"],
+      author: "123456789101213141522222",
       isFeatured,
       tags,
       // TODO: Make author dynamic
       // author: selectedAuthors.map((author) => author?.value),
       content: content,
-      category: selectedCategories.map((cat) => cat?.value),
+      category: selectedCategories?.value,
+      relatedPosts: selectedRelatedPosts.map((cat) => cat?.value),
+      sidebarPosts: selectedSidebarPosts.map((cat) => cat?.value),
     };
 
     console.log(postData);
@@ -169,11 +243,10 @@ const PublishNewPost = () => {
         <div>
           <label className="block font-medium text-white">Category</label>
           <Select
-            isMulti
             options={categoriesOptions}
             value={selectedCategories}
             onChange={handleCategoriesChange}
-            className="basic-multi-select text-black"
+            className="basic-single-select text-black"
             classNamePrefix="select"
             placeholder="Select Categories"
           />
@@ -214,6 +287,34 @@ const PublishNewPost = () => {
           )}
         </div>
 
+        {/* Related Selection */}
+        <div>
+          <label className="block font-medium text-white">Related Posts</label>
+          <Select
+            isMulti
+            options={relatedPostsOptions}
+            value={selectedRelatedPosts}
+            onChange={handleRelatedPostsChange}
+            className="basic-multi-select text-black"
+            classNamePrefix="select"
+            placeholder="Select Related Posts"
+          />
+        </div>
+
+        {/* Related Selection */}
+        <div>
+          <label className="block font-medium text-white">Sidebar Posts</label>
+          <Select
+            isMulti
+            options={sidebarPostsOptions}
+            value={selectedSidebarPosts}
+            onChange={handleSidebarPostsChange}
+            className="basic-multi-select text-black"
+            classNamePrefix="select"
+            placeholder="Select Sidebar Posts"
+          />
+        </div>
+
         {/* Tags */}
         <DynamicSelectField
           label="Tags"
@@ -225,6 +326,8 @@ const PublishNewPost = () => {
           defaultValue={tags} // Pass defaultValue for prefilled data
           onChange={setTags}
         />
+
+        {/* Related Posts */}
 
         {/* isActive Toggle */}
         <div className="col-span-1">
@@ -272,27 +375,27 @@ const PublishNewPost = () => {
       </form>
 
       {/* Preview Section */}
-      {/* {content && (
+      {content && (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4 text-white">
+          <h2 className="text-xl font-semibold mb-4 text-black">
             Preview Content
           </h2>
           <div className="border border-gray-300 p-4 md:p-8 rounded w-full max-w-full overflow-hidden">
-            {uploadedImageUrl ? (
+            {/* {uploadedImageUrl ? (
               <img
                 src={uploadedImageUrl}
                 alt="Uploaded Preview"
                 className="w-full max-w-full h-auto object-cover mb-4 rounded"
               />
-            ) : null}
+            ) : null} */}
 
             <div
-              className="break-words text-white"
+              className="break-words "
               dangerouslySetInnerHTML={{ __html: content }}
             />
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

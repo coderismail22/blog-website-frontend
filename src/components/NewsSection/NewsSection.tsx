@@ -6,10 +6,10 @@ const NewsSection = ({ post, flexReverse }) => {
     <div className="md:w-10/12 mx-auto pb-10">
       {/* Category Title */}
       <Link
-        to={`/all-posts/${post?.category}`}
+        to={`/all-posts/${post?.category?.name}`}
         className="flex gap-3 items-center border-b border-black my-5 py-4"
       >
-        <p className="text-3xl">{post?.category} </p>
+        <p className="text-3xl">{post?.category?.name} </p>
         <FaArrowRight className="text-xl" />
       </Link>
 

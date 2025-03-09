@@ -1,18 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import SidebarForNavbar from "./SidebarForNavbar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "@/redux/store";
-import { logout } from "@/redux/slices/authSlice";
 
 const Mobile = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
   return (
     <div>
       <div>

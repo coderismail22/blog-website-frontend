@@ -1,16 +1,20 @@
-import { Drawer, Sidebar } from "flowbite-react";
 import { useState } from "react";
-import { HiChartPie, HiLogin } from "react-icons/hi";
-import { MdOutlineMenu } from "react-icons/md";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@radix-ui/react-collapsible";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { HiOutlineMenu, HiChartPie, HiLogin } from "react-icons/hi";
 import { LogOut } from "lucide-react";
+
 const SidebarForNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleClose = () => setIsOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -18,79 +22,65 @@ const SidebarForNavbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
+    setIsOpen(false);
   };
+
   return (
-    <>
-      <div className="">
-        <MdOutlineMenu
-          onClick={() => setIsOpen(true)}
-          className="text-white text-3xl cursor-pointer"
-        />
-      </div>
-      <Drawer
-        backdrop={false}
-        open={isOpen}
-        onClose={handleClose}
-        className="bg-black"
-      >
-        <Drawer.Header
-          title="MENU"
-          titleIcon={() => <></>}
-          className="text-white"
-        />
-        <Drawer.Items>
-          <Sidebar
-            aria-label="Sidebar with multi-level dropdown example"
-            className="text-white [&>div]:bg-transparent [&>div]:p-0"
-          >
-            <div className="flex h-full flex-col justify-between py-2">
-              <div>
-                {/* <form className="pb-3 md:hidden">
-                  <TextInput
-                    icon={HiSearch}
-                    type="search"
-                    placeholder="Search"
-                    required
-                    size={32}
-                    className="text-white"
-                  />
-                </form> */}
-                <Sidebar.Items className="text-white">
-                  <Sidebar.ItemGroup className="text-white">
-                    {user ? (
-                      <div>
-                        <Sidebar.Item
-                          href="/dashboard"
-                          icon={HiChartPie}
-                          className="text-white hover:text-black"
-                        >
-                          Dashboard
-                        </Sidebar.Item>
-                        <Sidebar.Item
-                          icon={LogOut}
-                          className="text-white hover:text-black"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </Sidebar.Item>
-                      </div>
-                    ) : (
-                      <Sidebar.Item
-                        href="/login"
-                        icon={HiLogin}
-                        className="text-white hover:text-black"
-                      >
-                        Sign in
-                      </Sidebar.Item>
-                    )}
-                  </Sidebar.ItemGroup>
-                </Sidebar.Items>
-              </div>
-            </div>
-          </Sidebar>
-        </Drawer.Items>
-      </Drawer>
-    </>
+    <div className="flex">
+      {/* Mobile Sidebar (Drawer) */}
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="text-white text-2xl">
+            <HiOutlineMenu />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="bg-black text-white w-64">
+          <div className="p-4">
+            <h2 className="text-xl font-bold">Menu</h2>
+            <ul className="mt-4 space-y-2">
+              {user ? (
+                <>
+                  <li>
+                    <Button
+                      variant="ghost"
+                      className="w-full flex items-center gap-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <HiChartPie className="text-lg" />
+                      Dashboard
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      variant="ghost"
+                      className="w-full flex items-center gap-2"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="text-lg" />
+                      Logout
+                    </Button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Button
+                    variant="ghost"
+                    className="w-full flex items-center gap-2"
+                    onClick={() => {
+                      navigate("/login");
+                      setIsOpen(false);
+                    }}
+                  >
+                    <HiLogin className="text-lg" />
+                    Sign In
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 

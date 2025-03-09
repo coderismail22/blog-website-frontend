@@ -1,19 +1,11 @@
 import { MdOutlineMail } from "react-icons/md";
 import SidebarForNavbar from "./SidebarForNavbar";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { logout } from "@/redux/slices/authSlice";
 
 const Desktop = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
 
   return (
     <div>

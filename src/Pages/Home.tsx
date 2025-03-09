@@ -1,5 +1,4 @@
 import axiosInstance from "@/api/axiosInstance";
-import GoogleTranslate from "@/components/GoogleTranslate/GoogleTranslate";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { useEffect, useState } from "react";
 
@@ -31,15 +30,17 @@ const HomePage = () => {
 
         // ✅ Step 2: Process posts (ensuring relatedPosts and sidebarPosts are populated)
         const processedData = Array.from(categoryMap.values()).map(
-          (post: any) => ({
-            ...post,
-            relatedPosts: post.relatedPosts.length
-              ? post.relatedPosts
-              : getAutoRelatedPosts(post, data),
-            sidebarPosts: post.sidebarPosts.length
-              ? post.sidebarPosts
-              : getAutoSidebarPosts(post, data),
-          })
+          (post: any) => {
+            return {
+              ...post,
+              relatedPosts: post.relatedPosts.length
+                ? post.relatedPosts
+                : getAutoRelatedPosts(post, data),
+              sidebarPosts: post.sidebarPosts.length
+                ? post.sidebarPosts
+                : getAutoSidebarPosts(post, data),
+            };
+          }
         );
 
         setNewsSections(processedData);
