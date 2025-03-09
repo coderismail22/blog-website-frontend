@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 const HomePage = () => {
   const [newsSections, setNewsSections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [articleCount, setArticleCount] = useState(0);
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const res = await axiosInstance.get("/posts");
         const data = res?.data?.data;
-
+        setArticleCount(data.length);
         // ✅ Step 1: Group posts by category._id & pick the most recent one
         const categoryMap = new Map<string, any>();
 
@@ -94,7 +94,7 @@ const HomePage = () => {
         <div>
           <Banner />
         </div>{" "}
-        <ArticleCounter count={10} />
+        <ArticleCounter count={articleCount} />
         {loading ? (
           <p className="text-center text-lg">Loading...</p>
         ) : newsSections.length === 0 ? (
