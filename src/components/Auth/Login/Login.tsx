@@ -34,11 +34,15 @@ const Login = () => {
       localStorage.setItem("refreshToken", refreshToken);
 
       // Decode user token and get info
-      const decodedUser = jwtDecode<{ role: string; email: string }>(
-        accessToken
-      );
+      const decodedUser = jwtDecode<{
+        userId: string;
+        role: string;
+        email: string;
+      }>(accessToken);
+
       //  Construct the decoded user object
       const actualUserData = {
+        userId: decodedUser?.userId as string,
         role: decodedUser?.role as string,
         email: decodedUser?.email as string,
       };

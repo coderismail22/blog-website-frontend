@@ -12,38 +12,42 @@ const HomePage = () => {
         const res = await axiosInstance.get("/posts");
         const data = res?.data?.data;
 
-        // ✅ Step 1: Group posts by category & pick the most recent one
-        const categoryMap = new Map();
+        // ✅ Step 1: Group posts by category._id & pick the most recent one
+        const categoryMap = new Map<string, any>();
 
         data.forEach((post: any) => {
-          // Check if the category already exists
-          if (!categoryMap.has(post.category)) {
-            categoryMap.set(post.category, post);
+          const categoryId = post.category?._id; // ✅ Extract category._id
+          if (!categoryId) return; // Skip if category is missing
+
+          if (!categoryMap.has(categoryId)) {
+            categoryMap.set(categoryId, post);
           } else {
-            // If category exists, keep the most recent post
-            const existingPost = categoryMap.get(post.category);
+            const existingPost = categoryMap.get(categoryId);
             if (new Date(post.createdAt) > new Date(existingPost.createdAt)) {
-              categoryMap.set(post.category, post);
+              categoryMap.set(categoryId, post);
             }
           }
         });
 
-        // ✅ Step 2: Process posts (ensuring relatedPosts and sidebarPosts are populated)
+        // ✅ Step 2: Convert to array & process posts
         const processedData = Array.from(categoryMap.values()).map(
-          (post: any) => {
-            return {
-              ...post,
-              relatedPosts: post.relatedPosts.length
-                ? post.relatedPosts
-                : getAutoRelatedPosts(post, data),
-              sidebarPosts: post.sidebarPosts.length
-                ? post.sidebarPosts
-                : getAutoSidebarPosts(post, data),
-            };
-          }
+          (post: any) => ({
+            ...post,
+            author:
+              post.author && typeof post.author === "object"
+                ? post.author
+                : null, // Ensure author is an object
+            relatedPosts: post.relatedPosts.length
+              ? post.relatedPosts
+              : getAutoRelatedPosts(post, data),
+            sidebarPosts: post.sidebarPosts.length
+              ? post.sidebarPosts
+              : getAutoSidebarPosts(post, data),
+          })
         );
 
         setNewsSections(processedData);
+        console.log("🚀 Processed Data:", processedData);
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -55,15 +59,27 @@ const HomePage = () => {
   }, []);
 
   const getAutoRelatedPosts = (currentPost: any, allPosts: any[]) => {
+    if (!currentPost.category || !currentPost.category._id) return [];
+
     return allPosts
       .filter(
-        (p) => p._id !== currentPost._id && p.category === currentPost.category
+        (p) =>
+          p._id !== currentPost._id &&
+          p.category?._id?.toString() === currentPost.category?._id?.toString()
       )
       .slice(0, 3);
   };
 
   const getAutoSidebarPosts = (currentPost: any, allPosts: any[]) => {
-    return allPosts.filter((p) => p._id !== currentPost._id).slice(0, 2);
+    if (!currentPost.category || !currentPost.category._id) return [];
+
+    return allPosts
+      .filter(
+        (p) =>
+          p._id !== currentPost._id &&
+          p.category?._id?.toString() !== currentPost.category?._id?.toString()
+      )
+      .slice(0, 2);
   };
 
   return (

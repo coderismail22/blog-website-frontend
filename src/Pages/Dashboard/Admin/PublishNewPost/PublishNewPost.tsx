@@ -14,6 +14,8 @@ import "../../../../styles/swal.css";
 import { ICategoryOption, FormData, IAuthor } from "./post.type";
 import DynamicSelectField from "@/components/CustomForm/DynamicSelect";
 import * as Switch from "@radix-ui/react-switch";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const PublishNewPost = () => {
   const {
@@ -28,6 +30,7 @@ const PublishNewPost = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [isFeatured, setIsFeatured] = useState<boolean>(false); // Handle isFeatured Toggle
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // Categories
   const [selectedCategories, setSelectedCategories] = useState<
@@ -37,11 +40,11 @@ const PublishNewPost = () => {
     []
   );
 
-  // Authors
-  const [selectedAuthors, setSelectedAuthors] = useState<MultiValue<IAuthor>>(
-    []
-  );
-  const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
+  // Authors [If needed later multiple author]
+  // const [selectedAuthors, setSelectedAuthors] = useState<MultiValue<IAuthor>>(
+  //   []
+  // );
+  // const [authorOptions, setAuthorOptions] = useState<IAuthor[]>([]);
 
   // Related Posts
   const [selectedRelatedPosts, setSelectedRelatedPosts] = useState<
@@ -145,30 +148,30 @@ const PublishNewPost = () => {
   };
 
   // Fetch authors
-  useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        const { data } = await axiosInstance.get("/author");
+  // TODO: If multiple author needed later
+  // useEffect(() => {
+  //   const fetchAuthors = async () => {
+  //     try {
+  //       const { data } = await axiosInstance.get("/author");
 
-        // TODO: Add a type here
-        const formattedAuthors = data?.data?.map((author: any) => ({
-          value: author.name,
-          label: author.name,
-        }));
+  //       const formattedAuthors = data?.data?.map((author: any) => ({
+  //         value: author.name,
+  //         label: author.name,
+  //       }));
 
-        setAuthorOptions(formattedAuthors);
-      } catch (error) {
-        toast.error("Error fetching authors");
-      }
-    };
+  //       setAuthorOptions(formattedAuthors);
+  //     } catch (error) {
+  //       toast.error("Error fetching authors");
+  //     }
+  //   };
 
-    fetchAuthors();
-  }, []);
+  //   fetchAuthors();
+  // }, []);
 
   // Handle author Change
-  const handleAuthorsChange = (selectedOptions: MultiValue<IAuthor>) => {
-    setSelectedAuthors(selectedOptions || []); // Ensure it's an empty array when no categories are selected
-  };
+  // const handleAuthorsChange = (selectedOptions: MultiValue<IAuthor>) => {
+  //   setSelectedAuthors(selectedOptions || []); // Ensure it's an empty array when no categories are selected
+  // };
 
   // Handle content change
   const handleContentChange = (newContent: string) => {
@@ -179,7 +182,7 @@ const PublishNewPost = () => {
     const postData = {
       title: title,
       coverImage: uploadedImageUrl,
-      author: "123456789101213141522222",
+      author: user?.userId,
       isFeatured,
       tags,
       // TODO: Make author dynamic
@@ -190,7 +193,7 @@ const PublishNewPost = () => {
       sidebarPosts: selectedSidebarPosts.map((cat) => cat?.value),
     };
 
-    console.log(postData);
+    // console.log(postData);
     try {
       const res = await axiosInstance.post("/posts", postData, {
         headers: { "Content-Type": "application/json" },
@@ -258,7 +261,7 @@ const PublishNewPost = () => {
         </div>
 
         {/* Author Selection */}
-        <div>
+        {/* <div>
           <label className="block font-medium text-white">Author</label>
           <Select
             isMulti
@@ -274,7 +277,7 @@ const PublishNewPost = () => {
               At least one author is required
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* Image Upload Section */}
         <div>

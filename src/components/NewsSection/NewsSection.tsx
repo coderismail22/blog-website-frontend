@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
 const NewsSection = ({ post, flexReverse }) => {
+  {
+    console.log("post from newssectionnnnn", post);
+  }
   return (
     <div className="md:w-10/12 mx-auto pb-10">
       {/* Category Title */}
@@ -29,10 +32,10 @@ const NewsSection = ({ post, flexReverse }) => {
             />
             <div className="py-5 space-y-2">
               <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
-                <Link to={`/post-details/${post.slug}`}>{post.title}</Link>
+                <Link to={`/post-details/${post.slug}`}>{post?.title}</Link>
               </p>
               <p className="text-center text-[12px] font-bold">
-                By {post.author}
+                By {post?.author?.name}
               </p>
             </div>
           </div>
@@ -65,14 +68,14 @@ const NewsSection = ({ post, flexReverse }) => {
         {/* Sidebar News */}
         <div className="md:ml-3 mx-2 md:w-[30%] space-y-4">
           {post?.sidebarPosts?.slice(0, 2)?.map((sidebar) => (
-            <div key={sidebar._id} className="">
-              <img src={sidebar.coverImage} alt="" />
-              <p className="font-Playfair font-bold">
+            <div key={sidebar._id}>
+              <img src={sidebar.coverImage} alt="Img" />
+              <p className=" font-bold">
                 <Link to={`/post-details/${sidebar.slug}`}>
                   {sidebar.title}
                 </Link>
               </p>
-              <p className="text-[12px] font-semibold">By {sidebar.author}</p>
+              <p className="text-[12px] font-bold">By {post?.author?.name}</p>
             </div>
           ))}
         </div>
