@@ -1,4 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
+import Banner from "@/components/Banner/Banner";
+import BreakingNews from "@/components/BreakingNews/BreakingNews";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { useEffect, useState } from "react";
 
@@ -84,16 +86,20 @@ const HomePage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <div className="hidden md:block">
+        <BreakingNews />
+      </div>
+      <div>
+        <Banner />
+      </div>
       {loading ? (
         <p className="text-center text-lg">Loading...</p>
+      ) : newsSections.length === 0 ? (
+        <p className="text-center text-lg my-10">No posts to show</p>
       ) : (
         newsSections.map((section, index) => (
-          <div>
-            <NewsSection
-              key={section._id}
-              post={section}
-              flexReverse={index % 2 !== 0}
-            />
+          <div key={section._id}>
+            <NewsSection post={section} flexReverse={index % 2 !== 0} />
           </div>
         ))
       )}

@@ -6,6 +6,14 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import { LucideCalendarDays } from "lucide-react";
 import moment from "moment-timezone";
 import SimilarPostsManual from "../SimilarPostsManual/SimilarPostsManual";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+} from "react-share";
 
 const PostDetails = () => {
   const { slug } = useParams();
@@ -15,7 +23,8 @@ const PostDetails = () => {
   const [similarPostError, setSimilarPostError] = useState<string | null>(null);
   const [post, setPost] = useState("");
   const [similarPosts, setSimilarPosts] = useState([]);
-
+  // Share URL (can be set to current page's URL)
+  const shareUrl = `https://demo-blog-sw-2025.netlify.app/post-details/${slug}`;
   // Fetch post details
   useEffect(() => {
     const fetchPostDetails = async () => {
@@ -116,6 +125,21 @@ const PostDetails = () => {
 
         {/* Similar/Related Post(Manually) */}
         <SimilarPostsManual similarPosts={post?.relatedPosts} />
+        {/* Social Share Buttons */}
+        <div>
+          <p className="mt-10 mb-2 font-semibold">Share this article:</p>
+          <div className="flex gap-4 mb-10">
+            <FacebookShareButton url={shareUrl}>
+              <FacebookIcon size={32} round={true} />
+            </FacebookShareButton>
+            <TwitterShareButton url={shareUrl}>
+              <TwitterIcon size={32} round={true} />
+            </TwitterShareButton>
+            <LinkedinShareButton url={shareUrl}>
+              <LinkedinIcon size={32} round={true} />
+            </LinkedinShareButton>
+          </div>
+        </div>
       </div>
     </div>
   );

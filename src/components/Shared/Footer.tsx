@@ -1,93 +1,91 @@
-import logo from "/logo.png";
-import email from "@/assets/icons/gmail.png";
-import fb from "@/assets/icons/facebook.png";
-import insta from "@/assets/icons/instagram.png";
-import whatsapp from "@/assets/icons/whatsapp.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="bg-gray-100 mx-auto">
-      <footer className="text-gray-600 body-font">
-        <div className="w-10/12  px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-          <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-            <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
-              <img src={logo} className="w-12" alt="" />
-              <span className="ml-3 text-xl">Fab-ads</span>
-            </a>
-            <div className="flex my-3 gap-3">
-              <img src={email} className="w-12" alt="" />
-              <img src={fb} className="w-12" alt="" />
-              <img src={insta} className="w-12" alt="" />
-              <img src={whatsapp} className="w-12" alt="" />
-            </div>
-            <p className="mt-2 text-sm text-gray-500">
-              Skip the hassle and start running ads instantly with our verified
-              Facebook Ads accounts and Business Managers. Secure, fast, and
-              trusted by marketers worldwide.
+    <div className="bg-black text-white font-Playfair">
+      <footer className="text-white body-font">
+        <div className="container px-5 py-12 mx-auto flex flex-col md:flex-row md:items-start">
+          {/* Brand Section */}
+          <div className="w-full md:w-1/3 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+            <Link
+              to="/"
+              className="flex title-font font-medium items-center justify-center md:justify-start text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+              <span className="ml-3 text-xl text-white">Forbes</span>
+            </Link>
+            <p className="mt-2 text-sm text-white">
+              Air plant banjo lyft occupy retro adaptogen indego
             </p>
           </div>
-          <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                INQUIRIES
+
+          {/* Categories Section */}
+          <div className="flex-grow flex flex-wrap md:pl-20 mt-10 md:mt-0 text-center md:text-left">
+            {/* Column 1 */}
+            <div className="w-full md:w-1/2 px-4">
+              <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">
+                Site Policies
               </h2>
-              <nav className="list-none mb-10">
+              <nav className="list-none space-y-2">
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">Shop</a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">About Us</a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Recomendations
-                  </a>
-                </li>
-              </nav>
-            </div>
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                HELP
-              </h2>
-              <nav className="list-none mb-10">
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">Guideline</a>
-                </li>
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">Blogs</a>
-                </li>
-              </nav>
-            </div>
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                POLICIES
-              </h2>
-              <nav className="list-none mb-10">
-                <li>
-                  <a className="text-gray-600 hover:text-gray-800">
+                  <Link
+                    to="/privacy-policy"
+                    className="text-white hover:text-gray-400"
+                  >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Shipping and Delivery
-                  </a>
+                  <Link
+                    to="/terms-and-conditions"
+                    className="text-white hover:text-gray-400"
+                  >
+                    Terms and Conditions
+                  </Link>
+                </li>
+              </nav>
+            </div>
+
+            {/* Column 2 */}
+            <div className="w-full md:w-1/4 px-4 mt-6 md:mt-0">
+              <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">
+                Get Connected
+              </h2>
+              <nav className="list-none space-y-2">
+                <li>
+                  <Link
+                    to="/contact"
+                    className="text-white hover:text-gray-400"
+                  >
+                    Contact Us
+                  </Link>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">
-                    Terms & Conditions
-                  </a>
+                  <Link to="/about" className="text-white hover:text-gray-400">
+                    About Us
+                  </Link>
                 </li>
               </nav>
             </div>
           </div>
         </div>
       </footer>
+      <section className="bg-blue-200 text-black">
+        <h1 className="text-center ">
+          Copyright &copy; Aidasx. All Rights Reserved.
+        </h1>
+      </section>
     </div>
   );
 };
