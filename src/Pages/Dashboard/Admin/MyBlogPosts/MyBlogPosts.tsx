@@ -224,7 +224,7 @@ const MyBlogPosts = () => {
 
               {/* Author */}
               <p className="text-gray-500 text-sm mt-2">
-                <span className="font-bold">Author:</span> {blog.author}
+                <span className="font-bold">Author:</span> {blog?.author?.name}
               </p>
               {/* Date */}
               <p className="text-gray-500 text-sm">
@@ -233,7 +233,8 @@ const MyBlogPosts = () => {
               </p>
               {/* Categories */}
               <p className="text-gray-500 text-sm">
-                <span className="font-bold">Categories:</span> {blog?.category}
+                <span className="font-bold">Categories:</span>{" "}
+                {blog?.category?.name}
               </p>
               <hr className="my-4" />
               {/* Edit and Delete Button */}

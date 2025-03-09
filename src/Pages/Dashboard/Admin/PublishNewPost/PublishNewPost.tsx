@@ -330,7 +330,6 @@ const PublishNewPost = () => {
           onChange={setTags}
         />
 
-        {/* Related Posts */}
 
         {/* isActive Toggle */}
         <div className="col-span-1">
