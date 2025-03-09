@@ -1,4 +1,3 @@
-import { FaRegBookmark } from "react-icons/fa";
 import sub1 from "/default.jpg";
 import sub2 from "/default.jpg";
 
@@ -83,98 +82,7 @@ const otherNewsData = [
   },
 ];
 
-// trending
-const items = [
-  {
-    key: "1",
-    label: <span className="font-semibold text-lg text-red-600">Trending</span>,
-    children: (
-      <div className="mt-4">
-        {[
-          "Physical Attacks Against Bitcoin Holders Surge As BTC Price Rises",
-          "New Guns, More Ammo: Ukraine’s Artillery Blasts Away At A Rate Of...",
-          "The Real Reasons Companies Are Forcing You Back To The Office",
-          "The Highest-Paid Actors Of 2024",
-          "The Real Reasons Companies Are Forcing You Back To The Office",
-          "The Highest-Paid Actors Of 2024",
-          "The Real Reasons Companies Are Forcing You Back To The Office",
-          "The Highest-Paid Actors Of 2024",
-          "4 Reasons Behind ‘Phantom Plus-One’ Relationships—By A Psychologist",
-          "A Hapless Russian Soldier Couldn’t Shoot Down A Ukrainian Bomber Dron...",
-        ].map((title, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center gap-3 py-3 border-b"
-          >
-            <div className="flex gap-4">
-              <div className="">
-                <span className="text-red-600 font-semibold text-4xl font-Playfair">
-                  {index + 1}.
-                </span>
-              </div>
-              <div>
-                <p className="text-black font-semibold">{title}</p>
-                <p className="text-gray-500 text-sm">
-                  By{" "}
-                  <span className="text-blue-600 font-medium">Author Name</span>
-                  , Contributor
-                </p>
-              </div>
-            </div>
-            <div className="">
-              <FaRegBookmark className="text-2xl text-blue-600" />
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-//   {
-//     key: "2",
-//     label: (
-//       <span className="font-semibold text-lg text-gray-500">
-//         Editors' Picks
-//       </span>
-//     ),
-//     children: (
-//       <div className="mt-4">
-//         {[
-//           "Physical Attacks Against Bitcoin Holders Surge As BTC Price Rises",
-//           "New Guns, More Ammo: Ukraine’s Artillery Blasts Away At A Rate Of...",
-//           "The Real Reasons Companies Are Forcing You Back To The Office",
 
-//           "The Highest-Paid Actors Of 2024",
-//           "4 Reasons Behind ‘Phantom Plus-One’ Relationships—By A Psychologist",
-//           "A Hapless Russian Soldier Couldn’t Shoot Down A Ukrainian Bomber Dron...",
-//         ].map((title, index) => (
-//           <div
-//             key={index}
-//             className="flex justify-between items-center gap-3 py-3 border-b"
-//           >
-//             <div className="flex gap-4">
-//               <div className="">
-//                 <span className="text-red-600 font-semibold text-4xl font-Playfair">
-//                   {index + 1}.
-//                 </span>
-//               </div>
-//               <div>
-//                 <p className="text-black font-semibold">{title}</p>
-//                 <p className="text-gray-500 text-sm">
-//                   By{" "}
-//                   <span className="text-blue-600 font-medium">Author Name</span>
-//                   , Contributor
-//                 </p>
-//               </div>
-//             </div>
-//             <div className="">
-//               <FaRegBookmark className="text-2xl text-blue-600" />
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     ),
-//   },
-];
 
 import slider1 from "/default.jpg";
 import slider2 from "/default.jpg";
@@ -218,4 +126,4 @@ const newsSliderData = [
   },
 ];
 
-export { BreakingNewsData, subNewsData, otherNewsData, items, newsSliderData };
+export { BreakingNewsData, subNewsData, otherNewsData, newsSliderData };

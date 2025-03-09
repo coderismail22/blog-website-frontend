@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
 const NewsSection = ({ post, flexReverse }) => {
+  {
+    console.log("post from newssectionnnnn", post);
+  }
   return (
     <div className="md:w-10/12 mx-auto pb-10">
       {/* Category Title */}
@@ -41,18 +44,20 @@ const NewsSection = ({ post, flexReverse }) => {
           <div className="md:flex border-t">
             {post.relatedPosts?.slice(0, 3).map((related) => (
               <div key={related._id} className="md:border-r mr-3 mt-3">
-                <div className="flex  gap-1 pb-4 mt-5">
-                  <div className="max-w-[30%]">
-                    <img
-                      src={related.coverImage}
-                      className="w-full h-full"
-                      alt="img"
-                    />
+                <div className="flex flex-row-reverse gap-1 pb-4 mt-5">
+                  <div className="w-[70%]">
                     <p className="font-Playfair text-[15px] font-semibold">
                       <Link to={`/post-details/${related.slug}`}>
                         {related.title}
                       </Link>
                     </p>
+                  </div>
+                  <div className="w-[30%]">
+                    <img
+                      src={related.coverImage}
+                      className="w-full h-full"
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>

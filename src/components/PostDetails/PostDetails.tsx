@@ -88,7 +88,7 @@ const PostDetails = () => {
     <div>
       <ScrollRestoration />
       {/* Title */}
-      <div className="bg-black text-white">
+      <div className="bg-gray-900 text-white">
         <p className="text-3xl lg:text-5xl py-20 font-Playfair lg:w-1/2 text-center mx-auto">
           {post?.title}
         </p>

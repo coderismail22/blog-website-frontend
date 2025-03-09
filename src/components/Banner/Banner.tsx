@@ -1,11 +1,103 @@
 import banner from "/default.jpg";
 import { Link } from "react-router-dom";
-import { items, subNewsData } from "../BreakingNews/DB";
+import { subNewsData } from "../BreakingNews/DB";
 import { Tabs } from "antd";
+import { FaRegBookmark } from "react-icons/fa";
+// trending
+const items = [
+  {
+    key: "1",
+    label: <span className="font-semibold text-lg text-red-600">Trending</span>,
+    children: (
+      <div className="mt-4">
+        {[
+          "Physical Attacks Against Bitcoin Holders Surge As BTC Price Rises",
+          "New Guns, More Ammo: Ukraine’s Artillery Blasts Away At A Rate Of...",
+          "The Real Reasons Companies Are Forcing You Back To The Office",
+          "The Highest-Paid Actors Of 2024",
+          "The Real Reasons Companies Are Forcing You Back To The Office",
+          "The Highest-Paid Actors Of 2024",
+          "The Real Reasons Companies Are Forcing You Back To The Office",
+          "The Highest-Paid Actors Of 2024",
+          "4 Reasons Behind ‘Phantom Plus-One’ Relationships—By A Psychologist",
+          "A Hapless Russian Soldier Couldn’t Shoot Down A Ukrainian Bomber Dron...",
+        ].map((title, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center gap-3 py-3 border-b"
+          >
+            <div className="flex gap-4">
+              <div className="">
+                <span className="text-red-600 font-semibold text-4xl font-Playfair">
+                  {index + 1}.
+                </span>
+              </div>
+              <div>
+                <p className="text-black font-semibold">{title}</p>
+                <p className="text-gray-500 text-sm">
+                  By{" "}
+                  <span className="text-blue-600 font-medium">Author Name</span>
+                  , Contributor
+                </p>
+              </div>
+            </div>
+            <div className="">
+              <FaRegBookmark className="text-2xl text-blue-600" />
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  //   {
+  //     key: "2",
+  //     label: (
+  //       <span className="font-semibold text-lg text-gray-500">
+  //         Editors' Picks
+  //       </span>
+  //     ),
+  //     children: (
+  //       <div className="mt-4">
+  //         {[
+  //           "Physical Attacks Against Bitcoin Holders Surge As BTC Price Rises",
+  //           "New Guns, More Ammo: Ukraine’s Artillery Blasts Away At A Rate Of...",
+  //           "The Real Reasons Companies Are Forcing You Back To The Office",
 
-const Banner = () => {
+  //           "The Highest-Paid Actors Of 2024",
+  //           "4 Reasons Behind ‘Phantom Plus-One’ Relationships—By A Psychologist",
+  //           "A Hapless Russian Soldier Couldn’t Shoot Down A Ukrainian Bomber Dron...",
+  //         ].map((title, index) => (
+  //           <div
+  //             key={index}
+  //             className="flex justify-between items-center gap-3 py-3 border-b"
+  //           >
+  //             <div className="flex gap-4">
+  //               <div className="">
+  //                 <span className="text-red-600 font-semibold text-4xl font-Playfair">
+  //                   {index + 1}.
+  //                 </span>
+  //               </div>
+  //               <div>
+  //                 <p className="text-black font-semibold">{title}</p>
+  //                 <p className="text-gray-500 text-sm">
+  //                   By{" "}
+  //                   <span className="text-blue-600 font-medium">Author Name</span>
+  //                   , Contributor
+  //                 </p>
+  //               </div>
+  //             </div>
+  //             <div className="">
+  //               <FaRegBookmark className="text-2xl text-blue-600" />
+  //             </div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     ),
+  //   },
+];
+const Banner = ({ trendingData }) => {
   return (
-    <div className="md:w-10/12 mx-auto px-2 pt-14 ">
+    <div className="md:w-10/12 mx-auto px-2  ">
       <div className="md:flex mt-10">
         <div className="md:w-[70%] md:pr-4 border-r">
           {/* main news  */}
@@ -69,9 +161,10 @@ const Banner = () => {
         {/* sidebar  */}
         <div className="md:w-[30%] px-3">
           {/* tab section  */}
+          {/* Trending */}
           <Tabs
             defaultActiveKey="1"
-            items={items}
+            items={trendingData}
             // onChange={onChange}
             className="[&_.ant-tabs-nav]:border-b [&_.ant-tabs-tab-active]:text-red-600 [&_.ant-tabs-ink-bar]:bg-red-600"
           />

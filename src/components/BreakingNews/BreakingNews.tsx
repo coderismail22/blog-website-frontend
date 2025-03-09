@@ -7,9 +7,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { BreakingNewsData } from "./DB";
+import moment from "moment";
+import { Link } from "react-router-dom";
 
-const BreakingNews = () => {
+const BreakingNews = ({ BreakingNewsData }) => {
   return (
     <div className="border-b py-3">
       <div className="w-[90%] mx-auto relative ">
@@ -34,12 +35,14 @@ const BreakingNews = () => {
         >
           {BreakingNewsData?.map((item) => (
             <SwiperSlide key={item?.id}>
-              <div className="p-4 border-r">
-                <p className="text-gray-500 text-[12px]">{item?.time}</p>
-                <p className="text-[15px] font-semibold font-Playfair">
+              <Link to={`/post-details/${item?.slug}`} className="p-4 ">
+                <p className="text-[15px] font-semibold ">
                   {item?.title?.slice(0, 50)}...
+                </p>{" "}
+                <p className="text-gray-500 text-[12px] border-r">
+                  {moment(item?.createdAt).tz("Asia/Dhaka").fromNow()}
                 </p>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

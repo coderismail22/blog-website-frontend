@@ -4,17 +4,22 @@ import Banner from "@/components/Banner/Banner";
 import BreakingNews from "@/components/BreakingNews/BreakingNews";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { useEffect, useState } from "react";
+import { FaRegBookmark } from "react-icons/fa";
 
 const HomePage = () => {
   const [newsSections, setNewsSections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [articleCount, setArticleCount] = useState(0);
+  const [breakingNews, setBreakingNews] = useState<any>(null);
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const res = await axiosInstance.get("/posts");
         const data = res?.data?.data;
+        console.log("🚀 ~ fetchNews ~ data:", data);
         setArticleCount(data.length);
+        setBreakingNews(data);
+
         // ✅ Step 1: Group posts by category._id & pick the most recent one
         const categoryMap = new Map<string, any>();
 
@@ -85,14 +90,53 @@ const HomePage = () => {
       .slice(0, 2);
   };
 
+  const formattedTrendingData = [
+    {
+      key: "1",
+      label: (
+        <span className="font-semibold text-lg text-red-600">Trending</span>
+      ),
+      children: (
+        <div className="mt-4">
+          {breakingNews?.slice(0, 10)?.map((news, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center gap-3 py-3 border-b"
+            >
+              <div className="flex gap-4">
+                <div className="">
+                  <span className="text-red-600 font-semibold text-4xl font-Playfair">
+                    {index + 1}.
+                  </span>
+                </div>
+                <div>
+                  <p className="text-black font-semibold">{news.title}</p>
+                  <p className="text-gray-500 text-sm">
+                    By{" "}
+                    <span className="text-blue-600 font-medium">
+                      {news?.author?.name || "Unknown"}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="">
+                <FaRegBookmark className="text-2xl text-blue-600" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto px-4">
         <div className="hidden md:block">
-          <BreakingNews />
+          <BreakingNews BreakingNewsData={breakingNews} />
         </div>
         <div>
-          <Banner />
+          <Banner trendingData={formattedTrendingData} />
         </div>{" "}
         <ArticleCounter count={articleCount} />
         {loading ? (

@@ -102,7 +102,7 @@ const AllPosts = () => {
       </div>
       {/* Posts Grid */}
       {filteredPosts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-5">
           {filteredPosts?.slice(0, visiblePosts)?.map((post) => (
             <Link
               to={`/post-details/${post?.slug}`}

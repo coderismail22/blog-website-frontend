@@ -6,15 +6,18 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+      {" "}
+      {/* Full height layout */}
       <Navbar />
       <ScrollToTop />
-      <div className="">
+      {/* Main content should take up remaining space */}
+      <div className="flex-1">
         <Outlet />
       </div>
-      <Footer />
+      <Footer /> {/* Footer stays at bottom */}
       <MoveToTop />
-    </>
+    </div>
   );
 };
 
