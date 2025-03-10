@@ -16,7 +16,7 @@ const Desktop = () => {
           <MdOutlineMail className="text-2xl" />
         </div>
         <Link to="/" className="text-4xl font-semibold">
-          Forbes
+          Aidasx
         </Link>
         <div className="flex items-center gap-3">
           {user ? (

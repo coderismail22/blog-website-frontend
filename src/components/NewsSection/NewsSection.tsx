@@ -21,7 +21,8 @@ const NewsSection = ({ post, flexReverse }) => {
             flexReverse ? "border-l md:pl-4" : "border-r md:pr-4"
           }`}
         >
-          <div className="">
+          {/* Main News */}
+          <Link to={`/post-details/${post.slug}`}>
             <img
               src={post.coverImage}
               alt=""
@@ -35,13 +36,16 @@ const NewsSection = ({ post, flexReverse }) => {
                 By {post?.author?.name}
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Related News */}
           <div className="md:flex border-t">
             {post.relatedPosts?.slice(0, 3).map((related) => (
-              <div key={related._id} className="md:border-r mr-3 mt-3">
-                {console.log(post?.title, post?.relatedPosts)}
+              <Link
+                to={related?.slug}
+                key={related._id}
+                className="md:border-r mr-3 mt-3"
+              >
                 <div className="flex flex-row-reverse gap-1 pb-4 mt-5">
                   <div className="w-[70%]">
                     <p className="font-Playfair text-[15px] font-semibold">
@@ -53,12 +57,12 @@ const NewsSection = ({ post, flexReverse }) => {
                   <div className="w-[30%]">
                     <img
                       src={related.coverImage}
-                      className="w-full h-full"
-                      alt=""
+                      className="w-full "
+                      alt="Image"
                     />
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -66,7 +70,7 @@ const NewsSection = ({ post, flexReverse }) => {
         {/* Sidebar News */}
         <div className="md:ml-3 mx-2 md:w-[30%] space-y-4">
           {post?.sidebarPosts?.slice(0, 2)?.map((sidebar) => (
-            <div key={sidebar._id}>
+            <Link to={sidebar?.slug} key={sidebar._id}>
               <img src={sidebar.coverImage} alt="Img" />
               <p className=" font-bold">
                 <Link to={`/post-details/${sidebar.slug}`}>
@@ -74,7 +78,7 @@ const NewsSection = ({ post, flexReverse }) => {
                 </Link>
               </p>
               <p className="text-[12px] font-bold">By {post?.author?.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -18,7 +18,6 @@ const HomePage = () => {
       try {
         const res = await axiosInstance.get("/posts");
         const data = res?.data?.data;
-        console.log("🚀 ~ fetchNews ~ data:", data);
         setArticleCount(data.length);
         setBreakingNews(data);
 
@@ -56,18 +55,18 @@ const HomePage = () => {
             author:
               post.author && typeof post.author === "object"
                 ? post.author
-                : null, // Ensure author is an object
+                : null,
             relatedPosts: post.relatedPosts.length
               ? post.relatedPosts
-              : getAutoRelatedPosts(post, data) || [],
+              : getAutoRelatedPosts(post, data), // ✅ Only fetch from the same category
+
             sidebarPosts: post.sidebarPosts.length
               ? post.sidebarPosts
-              : getAutoSidebarPosts(post, data) || [],
+              : getAutoSidebarPosts(post, data), // ✅ Also ensure same category for sidebar
           })
         );
 
         setNewsSections(processedData);
-        console.log("🚀 Processed Data:", processedData);
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -80,7 +79,7 @@ const HomePage = () => {
 
   const getAutoRelatedPosts = (currentPost: any, allPosts: any[]) => {
     if (!currentPost.category || !currentPost.category._id) return [];
-  
+
     const related = allPosts
       .filter(
         (p) =>
@@ -88,22 +87,29 @@ const HomePage = () => {
           p.category?._id?.toString() === currentPost.category?._id?.toString()
       )
       .slice(0, 3);
-  
+    // console.log(`🔎 Related Posts for ${currentPost.title}:`, related);
+
     return related.length ? related : []; // ✅ Explicitly return [] if no posts found
   };
-  
+
   const getAutoSidebarPosts = (currentPost: any, allPosts: any[]) => {
     if (!currentPost.category || !currentPost.category._id) return [];
-  
+
+    // First, get related posts
+    const relatedPosts = getAutoRelatedPosts(currentPost, allPosts);
+
+    // Then, filter sidebar posts from the same category but exclude related posts
     const sidebar = allPosts
       .filter(
         (p) =>
           p._id !== currentPost._id &&
-          p.category?._id?.toString() !== currentPost.category?._id?.toString()
+          p.category?._id?.toString() ===
+            currentPost.category?._id?.toString() &&
+          !relatedPosts.some((relatedPost: any) => relatedPost._id === p._id) // Exclude related posts
       )
-      .slice(0, 2);
-  
-    return sidebar.length ? sidebar : []; // ✅ Explicitly return [] if no posts found
+      .slice(0, 2); // Limit to 2 posts for the sidebar
+
+    return sidebar.length ? sidebar : []; // Return empty array if no sidebar posts found
   };
 
   const formattedTrendingData = [
@@ -114,7 +120,7 @@ const HomePage = () => {
       ),
       children: (
         <div className="mt-4">
-          {breakingNews?.slice(0, 10)?.map((news, index) => (
+          {breakingNews?.slice(0, 5)?.map((news, index) => (
             <div
               key={index}
               className="flex justify-between items-center gap-3 py-3 border-b"

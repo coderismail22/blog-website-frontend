@@ -13,7 +13,7 @@ const Mobile = () => {
           <div className="flex justify-center items-center gap-3">
             <SidebarForNavbar />
             <Link to="/" className="text-xl">
-              Forbes
+              Aidasx
             </Link>
           </div>
 

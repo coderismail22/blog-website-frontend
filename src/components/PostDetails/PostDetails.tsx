@@ -105,7 +105,8 @@ const PostDetails = () => {
         <div className="space-y-2 py-5 ">
           <p className="flex text-[12px] gap-2 items-center ">
             <PersonIcon />
-            Author: {post?.author}
+          {console.log(post?.author)}
+            Author: {post?.author?.name}
           </p>
           <p className="flex text-[12px] gap-2 items-center ">
             <LucideCalendarDays className="w-[14px]" />

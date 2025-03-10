@@ -117,7 +117,7 @@ const AllPosts = () => {
               />
               <h3 className="text-lg font-semibold mt-2">{post.title}</h3>
               <p className="flex gap-1 text-sm text-gray-500">
-                <PersonIcon /> {post?.author}
+                <PersonIcon /> {post?.author?.name}
               </p>
               <p className="flex text-[12px] gap-2 items-center">
                 <LucideCalendarDays className="w-[14px]" />

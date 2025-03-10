@@ -23,11 +23,9 @@ const Footer = () => {
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              <span className="ml-3 text-xl text-white">Forbes</span>
+              <span className="ml-3 text-xl text-white">Aidasx</span>
             </Link>
-            <p className="mt-2 text-sm text-white">
-              Air plant banjo lyft occupy retro adaptogen indego
-            </p>
+            <p className="mt-2 text-sm text-white">One step ahead, always.</p>
           </div>
 
           {/* Categories Section */}

@@ -9,6 +9,8 @@ import { ICategoryOption, IAuthor } from "./post.type";
 import * as Switch from "@radix-ui/react-switch";
 import axiosInstance from "@/api/axiosInstance";
 import DynamicSelectField from "@/components/CustomForm/DynamicSelect";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
   const [title, setTitle] = useState(post.title || "");
@@ -16,6 +18,7 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState(post.imgUrl || "");
   const [isFeatured, setIsFeatured] = useState(post.isFeatured || false);
   const [tags, setTags] = useState<string[]>(post.tags || []);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // Related and Sidebar Post Selection
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]); // All posts to populate the dropdown
@@ -78,9 +81,7 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
           : null
       );
       // Set selected author using the author _id
-      setSelectedAuthor(
-        post.author ? { value: post.author._id, label: post.author.name } : null
-      );
+      setSelectedAuthor(post.author ? { value: post.author._id } : null);
       // Set selected tags using the tags
       setTags(post.tags || []);
     }
@@ -149,9 +150,9 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
     const updatedPostData = {
       title,
       content: body,
-      image: uploadedImageUrl,
+      coverImage: uploadedImageUrl,
       category: selectedCategory?.value || "",
-      author: selectedAuthor?.value || "",
+      author: selectedAuthor?.value || user?.userId,
       isFeatured,
       tags,
       relatedPosts: selectedRelatedPosts.map((post) => post.value),
@@ -164,6 +165,7 @@ const PostEditModal = ({ isOpen, onClose, post, onPostUpdate }: any) => {
       onPostUpdate();
       onClose();
     } catch (error) {
+      console.log(error);
       Swal.fire("Error!", "Failed to update post.", "error");
     }
   };

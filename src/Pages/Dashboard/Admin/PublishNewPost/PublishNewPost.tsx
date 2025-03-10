@@ -330,7 +330,6 @@ const PublishNewPost = () => {
           onChange={setTags}
         />
 
-
         {/* isActive Toggle */}
         <div className="col-span-1">
           <div className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
@@ -36,14 +36,16 @@ const SidebarForNavbar = () => {
               {user ? (
                 <>
                   <li>
-                    <Button
-                      variant="ghost"
-                      className="w-full flex items-center gap-2"
+                    <Link
+                      to="/dashboard"
+                      className="w-full flex items-center justify-center gap-2"
                       onClick={() => setIsOpen(false)}
                     >
-                      <HiChartPie className="text-lg" />
-                      Dashboard
-                    </Button>
+                      <Button variant="ghost">
+                        <HiChartPie className="text-lg" />
+                        Dashboard
+                      </Button>
+                    </Link>
                   </li>
                   <li>
                     <Button

@@ -39,6 +39,8 @@ const MyBlogPosts = () => {
     try {
       const { data } = await axiosInstance.get("/posts");
       const posts: BlogPost[] = data?.data;
+      console.log("dataaa", data);
+      console.log("postttt", posts);
       setPosts(posts);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -189,7 +191,7 @@ const MyBlogPosts = () => {
 
       {filteredBlogPosts.length === 0 ? (
         <p className="text-center text-gray-600 text-xl font-semibold mt-6">
-          There&apos;s no post to show
+          There are no posts to show
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
