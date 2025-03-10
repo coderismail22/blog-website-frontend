@@ -87,15 +87,17 @@ const PostDetails = () => {
   return (
     <div>
       <ScrollRestoration />
+
       {/* Title */}
       <div className="bg-gray-900 text-white">
         <p className="text-3xl lg:text-5xl py-20 font-Playfair lg:w-1/2 text-center mx-auto">
           {post?.title}
         </p>
       </div>
+
       {/* Cover Image */}
-      <div className="flex flex-col items-center justify-center">
-        <img src={post?.coverImage} alt="" />
+      <div className="flex flex-col items-center justify-center mt-5 max-w-[300px] mx-auto">
+        <img className="w-full" src={post?.coverImage} alt="Image" />
       </div>
 
       {/* Author & Publish Date */}
@@ -125,6 +127,7 @@ const PostDetails = () => {
 
         {/* Similar/Related Post(Manually) */}
         <SimilarPostsManual similarPosts={post?.relatedPosts} />
+
         {/* Social Share Buttons */}
         <div>
           <p className="mt-10 mb-2 font-semibold">Share this article:</p>

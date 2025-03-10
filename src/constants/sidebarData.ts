@@ -1,3 +1,4 @@
+import { Quote } from "lucide-react";
 import { BiCategory } from "react-icons/bi";
 import { FaHome, FaRegListAlt, FaRegEdit } from "react-icons/fa";
 
@@ -37,8 +38,11 @@ export const sidebarData = {
       label: "All Posts",
       path: "/dashboard/admin/edit-service",
     },
+    {
+      icon: Quote,
+      label: "Quote",
+      path: "/dashboard/admin/quote",
+    },
   ],
-  user: [
-    { label: "Home", path: "/dashboard/admin/profile", icon: FaHome },
-  ],
+  user: [{ label: "Home", path: "/dashboard/admin/profile", icon: FaHome }],
 };

@@ -12,6 +12,10 @@ import PostDetails from "@/components/PostDetails/PostDetails";
 import AllPosts from "@/Pages/AllPosts/AllPosts";
 import Register from "@/components/Auth/Register/Register";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+import AllNotice from "@/Pages/Dashboard/Admin/Notice/AllNotice";
+import PublishNotice from "@/Pages/Dashboard/Admin/Notice/PublishNotice";
+import EditNotice from "@/Pages/Dashboard/Admin/Notice/EditNotice";
+import Quote from "@/Pages/Dashboard/Admin/Quote/Quote";
 // import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
@@ -42,11 +46,10 @@ export const router = createBrowserRouter([
     children: [
       // Role: Admin
       { path: "/dashboard/admin/profile", element: <AdminProfile /> },
-      // { path: "/dashboard/admin/", element: <AdminProfile /> },
       { path: "/dashboard/admin/add-category", element: <Categories /> },
       { path: "/dashboard/admin/add-service", element: <PublishNewPost /> },
       { path: "/dashboard/admin/edit-service", element: <MyBlogPosts /> },
-      // { path: "/dashboard/admin/blog-editor-new-post", element: <PublishNewBlogPost /> },
+      { path: "/dashboard/admin/quote", element: <Quote /> },
     ],
   },
   {

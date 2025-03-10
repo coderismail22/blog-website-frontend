@@ -10,7 +10,7 @@ const NewsSection = ({ post, flexReverse }) => {
       {/* Category Title */}
       <Link
         to={`/all-posts/${post?.category?.name}`}
-        className="flex gap-3 items-center border-b border-black my-5 py-4"
+        className="flex gap-3 items-center border-b border-black my-5 py-4 font-siliguri"
       >
         <p className="text-3xl">{post?.category?.name} </p>
         <FaArrowRight className="text-xl" />

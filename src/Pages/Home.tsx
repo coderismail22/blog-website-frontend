@@ -5,12 +5,14 @@ import BreakingNews from "@/components/BreakingNews/BreakingNews";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { useEffect, useState } from "react";
 import { FaRegBookmark } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [newsSections, setNewsSections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [articleCount, setArticleCount] = useState(0);
   const [breakingNews, setBreakingNews] = useState<any>(null);
+  const [latestFeaturedPost, setLatestFeaturedPost] = useState<any>(null);
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -19,6 +21,16 @@ const HomePage = () => {
         console.log("🚀 ~ fetchNews ~ data:", data);
         setArticleCount(data.length);
         setBreakingNews(data);
+
+        //  Find and set the latest featured post
+        const latestFeaturedPost = data
+          .filter((post: any) => post.isFeatured) // Filter posts with isFeatured === true
+          .sort(
+            (a: any, b: any) =>
+              new Date(b.createdAt as string).getTime() -
+              new Date(a.createdAt as string).getTime()
+          )[0]; // Sort by date (latest first) & pick first item
+        setLatestFeaturedPost(latestFeaturedPost || null); // ✅ Store the latest featured post
 
         // ✅ Step 1: Group posts by category._id & pick the most recent one
         const categoryMap = new Map<string, any>();
@@ -105,12 +117,17 @@ const HomePage = () => {
             >
               <div className="flex gap-4">
                 <div className="">
-                  <span className="text-red-600 font-semibold text-4xl font-Playfair">
+                  <span className="text-red-600 font-semibold text-4xl">
                     {index + 1}.
                   </span>
                 </div>
                 <div>
-                  <p className="text-black font-semibold">{news.title}</p>
+                  <Link
+                    to={`/post-details/${news.slug}`}
+                    className="text-black font-semibold"
+                  >
+                    {news.title}
+                  </Link>
                   <p className="text-gray-500 text-sm">
                     By{" "}
                     <span className="text-blue-600 font-medium">
@@ -136,8 +153,11 @@ const HomePage = () => {
           <BreakingNews BreakingNewsData={breakingNews} />
         </div>
         <div>
-          <Banner trendingData={formattedTrendingData} />
-        </div>{" "}
+          <Banner
+            trendingData={formattedTrendingData}
+            latestFeaturedPost={latestFeaturedPost}
+          />
+        </div>
         <ArticleCounter count={articleCount} />
         {loading ? (
           <p className="text-center text-lg">Loading...</p>
