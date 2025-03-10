@@ -7,29 +7,26 @@ const Banner = ({ trendingData, latestFeaturedPost }) => {
     <div className="md:w-10/12 mx-auto px-2  ">
       <div className="md:flex mt-10">
         <div className="md:w-[70%] md:pr-4 border-r">
-          {/* main news  */}
-          <div className="">
-            <img
-              src={latestFeaturedPost?.coverImage}
-              alt="Image"
-              className="max-w-[500px] max-h-[400px] transition delay-300 duration-200 flex flex-col items-center justify-center mx-auto"
-            />
-            <div className="py-5 space-y-2">
-              <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
-                <Link to={`/post-details/${latestFeaturedPost?.slug}`}>
-                  {latestFeaturedPost?.title}
-                </Link>
-              </p>
-              <p className="text-center text-[12px]">
-                By {latestFeaturedPost?.author?.name}
-              </p>
-              {/* <p className="text-center">
-                Kuok Meng Wei, whose grandfather was once called the world’s
-                shrewdest businessman by Forbes, is leading his family into what
-                the 41-year-old describes as the hottest industry in decades.
-              </p> */}
+          {/* main news + latest featured post  */}
+          {latestFeaturedPost && (
+            <div>
+              <img
+                src={latestFeaturedPost?.coverImage}
+                alt="Image"
+                className="max-w-full  overflow-hidden transition delay-300 duration-200 flex flex-col items-center justify-center mx-auto"
+              />
+              <div className="py-5 space-y-2">
+                <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
+                  <Link to={`/post-details/${latestFeaturedPost?.slug}`}>
+                    {latestFeaturedPost?.title}
+                  </Link>
+                </p>
+                <p className="text-center text-[12px]">
+                  By {latestFeaturedPost?.author?.name}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* sub news  */}
           {/* <div className="grid md:grid-cols-2 gap-2 border-t py-10">

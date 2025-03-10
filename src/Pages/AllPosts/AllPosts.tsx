@@ -12,6 +12,7 @@ import { FaSearch } from "react-icons/fa";
 
 const AllPosts = () => {
   const { category } = useParams();
+  const decodedCategory = decodeURIComponent(category);
   const [posts, setPosts] = useState([]);
   const [visiblePosts, setVisiblePosts] = useState(6); // Initial 6 visible posts
   const [loading, setLoading] = useState(true);
@@ -35,7 +36,7 @@ const AllPosts = () => {
       setLoading(true);
       try {
         const response = await axiosInstance.get(
-          `/posts/get-all-category-post/${category}`
+          `/posts/get-all-category-post/${encodeURIComponent(decodedCategory)}`
         );
         setPosts(response.data.data || []);
       } catch (err) {

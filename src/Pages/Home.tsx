@@ -59,10 +59,10 @@ const HomePage = () => {
                 : null, // Ensure author is an object
             relatedPosts: post.relatedPosts.length
               ? post.relatedPosts
-              : getAutoRelatedPosts(post, data),
+              : getAutoRelatedPosts(post, data) || [],
             sidebarPosts: post.sidebarPosts.length
               ? post.sidebarPosts
-              : getAutoSidebarPosts(post, data),
+              : getAutoSidebarPosts(post, data) || [],
           })
         );
 
@@ -80,26 +80,30 @@ const HomePage = () => {
 
   const getAutoRelatedPosts = (currentPost: any, allPosts: any[]) => {
     if (!currentPost.category || !currentPost.category._id) return [];
-
-    return allPosts
+  
+    const related = allPosts
       .filter(
         (p) =>
           p._id !== currentPost._id &&
           p.category?._id?.toString() === currentPost.category?._id?.toString()
       )
       .slice(0, 3);
+  
+    return related.length ? related : []; // ✅ Explicitly return [] if no posts found
   };
-
+  
   const getAutoSidebarPosts = (currentPost: any, allPosts: any[]) => {
     if (!currentPost.category || !currentPost.category._id) return [];
-
-    return allPosts
+  
+    const sidebar = allPosts
       .filter(
         (p) =>
           p._id !== currentPost._id &&
           p.category?._id?.toString() !== currentPost.category?._id?.toString()
       )
       .slice(0, 2);
+  
+    return sidebar.length ? sidebar : []; // ✅ Explicitly return [] if no posts found
   };
 
   const formattedTrendingData = [

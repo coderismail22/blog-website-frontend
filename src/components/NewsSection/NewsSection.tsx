@@ -2,14 +2,11 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
 const NewsSection = ({ post, flexReverse }) => {
-  {
-    console.log("post from newssectionnnnn", post);
-  }
   return (
     <div className="md:w-10/12 mx-auto pb-10">
       {/* Category Title */}
       <Link
-        to={`/all-posts/${post?.category?.name}`}
+        to={`/all-posts/${encodeURIComponent(post?.category?.name)}`}
         className="flex gap-3 items-center border-b border-black my-5 py-4 font-siliguri"
       >
         <p className="text-3xl">{post?.category?.name} </p>
@@ -24,11 +21,11 @@ const NewsSection = ({ post, flexReverse }) => {
             flexReverse ? "border-l md:pl-4" : "border-r md:pr-4"
           }`}
         >
-          <div>
+          <div className="">
             <img
               src={post.coverImage}
               alt=""
-              className="w-full border h-[50vh]"
+              className="w-full border h-[50vh] "
             />
             <div className="py-5 space-y-2">
               <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
@@ -44,6 +41,7 @@ const NewsSection = ({ post, flexReverse }) => {
           <div className="md:flex border-t">
             {post.relatedPosts?.slice(0, 3).map((related) => (
               <div key={related._id} className="md:border-r mr-3 mt-3">
+                {console.log(post?.title, post?.relatedPosts)}
                 <div className="flex flex-row-reverse gap-1 pb-4 mt-5">
                   <div className="w-[70%]">
                     <p className="font-Playfair text-[15px] font-semibold">
