@@ -13,7 +13,7 @@ const Banner = ({ trendingData, latestFeaturedPost }) => {
               <img
                 src={latestFeaturedPost?.coverImage}
                 alt="Image"
-                className="max-w-full  overflow-hidden transition delay-300 duration-200 flex flex-col items-center justify-center mx-auto"
+                className="w-full h-auto object-cover mx-auto transition duration-300 ease-in-out"
               />
               <div className="py-5 space-y-2">
                 <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
@@ -28,21 +28,7 @@ const Banner = ({ trendingData, latestFeaturedPost }) => {
             </div>
           )}
 
-          {/* sub news  */}
-          {/* <div className="grid md:grid-cols-2 gap-2 border-t py-10">
-            {subNewsData?.map((item) => (
-              <div key={item?.id} className="">
-                <img
-                  src={item?.image}
-                  alt=""
-                  className="h-72 w-full object-cover"
-                />
-                <p className="font-Playfair text-xl font-semibold">
-                  {item?.title}
-                </p>
-              </div>
-            ))}
-          </div> */}
+          {/* Quote of the day */}
           <QuoteOfTheDay />
         </div>
 

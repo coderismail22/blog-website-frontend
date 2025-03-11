@@ -137,7 +137,7 @@ const HomePage = () => {
                 <div>
                   <Link
                     to={`/post-details/${news.slug}`}
-                    className="text-black font-semibold"
+                    className="text-black font-semibold font-siliguri"
                   >
                     {news.title}
                   </Link>

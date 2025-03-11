@@ -26,7 +26,7 @@ const NewsSection = ({ post, flexReverse }) => {
             <img
               src={post.coverImage}
               alt=""
-              className="w-full border h-[50vh] "
+              className="w-full h-auto object-cover border"
             />
             <div className="py-5 space-y-2">
               <p className="font-Playfair font-semibold text-2xl text-center hover:underline">
@@ -40,13 +40,13 @@ const NewsSection = ({ post, flexReverse }) => {
 
           {/* Related News */}
           <div className="md:flex border-t">
-            {post.relatedPosts?.slice(0, 3).map((related) => (
+            {post.relatedPosts?.slice(0, 2).map((related) => (
               <Link
                 to={`/post-details/${related.slug}`}
                 key={related._id}
                 className="md:border-r mr-3 mt-3"
               >
-                <div className="flex flex-row-reverse gap-1 pb-4 mt-5">
+                <div className="flex flex-row-reverse  pb-4 mt-5 items-center gap-2">
                   <div className="w-[70%]">
                     <p className="font-Playfair text-[15px] font-semibold">
                       <Link to={`/post-details/${related.slug}`}>
@@ -57,7 +57,7 @@ const NewsSection = ({ post, flexReverse }) => {
                   <div className="w-[30%]">
                     <img
                       src={related.coverImage}
-                      className="w-full "
+                      className="w-full h-auto object-cover"
                       alt="Image"
                     />
                   </div>
@@ -70,8 +70,12 @@ const NewsSection = ({ post, flexReverse }) => {
         {/* Sidebar News */}
         <div className="md:ml-3 mx-2 md:w-[30%] space-y-4">
           {post?.sidebarPosts?.slice(0, 2)?.map((sidebar) => (
-            <Link to={`/post-details/${sidebar.slug}`} key={sidebar._id}>
-              <img src={sidebar.coverImage} alt="Img" />
+            <Link to={`/post-details/${sidebar.slug}`} key={sidebar._id} className="mb-5 block">
+              <img
+                src={sidebar.coverImage}
+                className="w-full h-auto object-cover"
+                alt="Img"
+              />
               <p className=" font-bold">
                 <Link to={`/post-details/${sidebar.slug}`}>
                   {sidebar.title}

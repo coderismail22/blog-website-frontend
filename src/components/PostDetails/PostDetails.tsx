@@ -122,7 +122,7 @@ const PostDetails = () => {
         </div>
 
         {/* Content */}
-        <div>
+        <div className="mb-10">
           <p
             className="text-xl"
             dangerouslySetInnerHTML={{ __html: post?.content }}
