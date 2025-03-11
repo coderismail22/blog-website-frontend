@@ -12,11 +12,9 @@ import PostDetails from "@/components/PostDetails/PostDetails";
 import AllPosts from "@/Pages/AllPosts/AllPosts";
 import Register from "@/components/Auth/Register/Register";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
-import AllNotice from "@/Pages/Dashboard/Admin/Notice/AllNotice";
-import PublishNotice from "@/Pages/Dashboard/Admin/Notice/PublishNotice";
-import EditNotice from "@/Pages/Dashboard/Admin/Notice/EditNotice";
 import Quote from "@/Pages/Dashboard/Admin/Quote/Quote";
 import Users from "@/Pages/Dashboard/Admin/Users/AllUsers";
+import SearchResults from "@/Pages/SearchResults/SearchResults";
 // import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
@@ -35,6 +33,7 @@ export const router = createBrowserRouter([
         path: "/all-posts/:category",
         element: <AllPosts />,
       },
+      { path: "/search", element: <SearchResults /> },
     ],
   },
   {
