@@ -1,4 +1,3 @@
-import { MdOutlineMail } from "react-icons/md";
 import SidebarForNavbar from "./SidebarForNavbar";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -13,12 +12,12 @@ const Desktop = () => {
       <div className="py-2 w-11/12 mx-auto text-white flex items-center justify-between">
         <div className="flex justify-center items-center gap-3">
           <SidebarForNavbar />
-          <p className="">Subscribe to Newsletter</p>
-          <MdOutlineMail className="text-2xl" />
-        </div>
+          {/* <p className="">Subscribe to Newsletter</p> */}
+          {/* <MdOutlineMail className="text-2xl" /> */}
         <Link to="/" className="text-4xl font-semibold">
           Aidasx
         </Link>
+        </div>
         <div className="flex items-center gap-3">
           {user ? (
             <Link to="/dashboard">
@@ -27,7 +26,7 @@ const Desktop = () => {
               
             </Link>
           ) : (
-            <Link to="/login">Login</Link>
+            <Link to="/login">Sign In</Link>
           )}
         </div>
       </div>

@@ -63,7 +63,7 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black">
       <Helmet>
-        <title>FabAds | Login</title>
+        <title>Aidasx | Login</title>
       </Helmet>
       <div className="w-full max-w-sm p-8 bg-gray-800 shadow-lg rounded-lg border border-gray-700">
         <div className="flex flex-col items-center justify-center mb-2">
@@ -72,7 +72,7 @@ const Login = () => {
           </Link>
         </div>
         <h2 className="text-xl font-bold text-center text-gray-100 mb-4">
-          Login to Your Account
+          Sign in to Your Account
         </h2>
 
         {/* Show Error Message */}
@@ -82,7 +82,7 @@ const Login = () => {
 
         <AppForm
           onSubmit={onSubmit}
-          buttonText={loading ? "Logging in..." : "Login"}
+          buttonText={loading ? "Signing in..." : "Sign In"}
           submitButtonStyles="bg-blue-500 hover:bg-blue-600 text-white"
           defaultValues={{ email: "", password: "" }}
         >
@@ -105,7 +105,7 @@ const Login = () => {
           />
           <Link to="/register" className="block text-blue-400 text-center">
             Don't have an account?{" "}
-            <span className="underline underline-offset-4">Register Now.</span>
+            <span className="underline underline-offset-4">Sign Up Now.</span>
           </Link>
         </AppForm>
       </div>

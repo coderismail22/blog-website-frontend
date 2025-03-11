@@ -96,7 +96,7 @@ const PostDetails = () => {
       bg-white
        text-black"
       >
-        <p className="text-3xl lg:text-5xl py-20 font-Playfair lg:w-1/2 text-center mx-auto">
+        <p className="text-4xl lg:text-5xl py-10 font-Playfair lg:w-1/2 text-center mx-auto">
           {post?.title}
         </p>
       </div>
@@ -111,7 +111,6 @@ const PostDetails = () => {
         <div className="space-y-2 py-5 ">
           <p className="flex text-[12px] gap-2 items-center ">
             <PersonIcon />
-            {console.log(post?.author)}
             Author: {post?.author?.name}
           </p>
           <p className="flex text-[12px] gap-2 items-center ">

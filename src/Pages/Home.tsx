@@ -149,9 +149,9 @@ const HomePage = () => {
                   </p>
                 </div>
               </div>
-              <div className="">
+              {/* <div className="">
                 <FaRegBookmark className="text-2xl text-blue-600" />
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

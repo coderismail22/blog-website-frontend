@@ -13,7 +13,7 @@ const Mobile = () => {
         <div className="py-2 w-11/12 mx-auto text-white flex items-center justify-between">
           <div className="flex justify-center items-center gap-3">
             <SidebarForNavbar />
-            <Link to="/" className="text-xl">
+            <Link to="/" className="text-xl font-semibold">
               Aidasx
             </Link>
           </div>
@@ -25,7 +25,7 @@ const Mobile = () => {
                   <CgProfile className="text-2xl" />
                 </Link>
               ) : (
-                <Link to="/login">Login</Link>
+                <Link to="/login">Sign In</Link>
               )}
             </div>
           </div>

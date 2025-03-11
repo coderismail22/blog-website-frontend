@@ -61,7 +61,7 @@ const Register = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black">
       <Helmet>
-        <title>Aisasx | Register</title>
+        <title>Aidasx | Register</title>
       </Helmet>
       <div className="w-full max-w-sm p-8 bg-gray-800 shadow-lg rounded-lg border border-gray-700">
         <div className="flex flex-col items-center justify-center mb-2">
@@ -113,7 +113,7 @@ const Register = () => {
 
           <Link to="/login" className="block text-blue-400 text-center">
             Already have an account?{" "}
-            <span className="underline underline-offset-4">Login here.</span>
+            <span className="underline underline-offset-4">Sign in here.</span>
           </Link>
         </AppForm>
       </div>

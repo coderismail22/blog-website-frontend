@@ -5,8 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
-import { HiOutlineMenu, HiChartPie, HiLogin } from "react-icons/hi";
-import { LogOut, LogOutIcon } from "lucide-react";
+import { HiOutlineMenu, HiChartPie } from "react-icons/hi";
 import Loader from "../Loader/Loader";
 import axiosInstance from "@/api/axiosInstance";
 
@@ -48,15 +47,15 @@ const SidebarForNavbar = () => {
     return <div>Something went wrong...</div>;
   }
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Mobile Sidebar (Drawer) */}
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={setIsOpen} >
         <SheetTrigger asChild>
           <Button variant="ghost" className="text-white text-2xl">
             <HiOutlineMenu />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="bg-black text-white w-64">
+        <SheetContent side="left" className="bg-black text-white w-64 overflow-y-scroll">
           <div className="p-4">
             <h2 className="text-xl font-bold">Menu</h2>
             <ul className="mt-4 space-y-2">
@@ -74,7 +73,7 @@ const SidebarForNavbar = () => {
                       </Button>
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       to="#"
                       className="w-full gap-2"
@@ -88,25 +87,26 @@ const SidebarForNavbar = () => {
                         Logout {"     "}
                       </Button>
                     </Link>
-                  </li>
+                  </li> */}
                 </>
               ) : (
-                <li>
-                  <Link
-                    to="/login"
-                    className="w-full gap-2 mb-5 "
-                    onClick={() => {
-                      setIsOpen(false);
-                    }}
-                  >
-                    <Button variant="secondary">
-                      <HiLogin />
-                      Login
-                    </Button>
-                  </Link>
-                </li>
+                // <li>
+                //   <Link
+                //     to="/login"
+                //     className="w-full gap-2 mb-5 "
+                //     onClick={() => {
+                //       setIsOpen(false);
+                //     }}
+                //   >
+                //     <Button variant="secondary">
+                //       <HiLogin />
+                //       Login
+                //     </Button>
+                //   </Link>
+                // </li>
+                null
               )}
-              <p className="font-bold tracking-widest ">Categories:</p>
+              {/* <p className="font-bold tracking-widest ">Categories:</p> */}
               {loading ? (
                 <Loader />
               ) : (
