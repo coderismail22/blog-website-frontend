@@ -3,8 +3,10 @@ import ArticleCounter from "@/components/ArticleCounter/ArticleCounter";
 import Banner from "@/components/Banner/Banner";
 import BreakingNews from "@/components/BreakingNews/BreakingNews";
 import NewsSection from "@/components/NewsSection/NewsSection";
+import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { FaRegBookmark } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
@@ -13,6 +15,7 @@ const HomePage = () => {
   const [articleCount, setArticleCount] = useState(0);
   const [breakingNews, setBreakingNews] = useState<any>(null);
   const [latestFeaturedPost, setLatestFeaturedPost] = useState<any>(null);
+  const user = useSelector((state: RootState) => state.auth.user);
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -168,7 +171,7 @@ const HomePage = () => {
             latestFeaturedPost={latestFeaturedPost}
           />
         </div>
-        <ArticleCounter count={articleCount} />
+        {user?.role === "admin" && <ArticleCounter count={articleCount} />}
         {loading ? (
           <p className="text-center text-lg">Loading...</p>
         ) : newsSections.length === 0 ? (

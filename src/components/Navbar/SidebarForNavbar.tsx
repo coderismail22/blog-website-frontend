@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,9 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
 import { HiOutlineMenu, HiChartPie, HiLogin } from "react-icons/hi";
-import { LogOut } from "lucide-react";
+import { LogOut, LogOutIcon } from "lucide-react";
+import Loader from "../Loader/Loader";
+import axiosInstance from "@/api/axiosInstance";
 
 const SidebarForNavbar = () => {
+  const [categories, setCategories] = useState<TCategory[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,6 +25,28 @@ const SidebarForNavbar = () => {
     setIsOpen(false);
   };
 
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get("/categories");
+        const allCategories = response.data.data;
+        setCategories(allCategories);
+      } catch (err) {
+        console.error("API Request Error:", err);
+        setError("Failed to load courses.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (error) {
+    return <div>Something went wrong...</div>;
+  }
   return (
     <div className="flex">
       {/* Mobile Sidebar (Drawer) */}
@@ -35,43 +62,65 @@ const SidebarForNavbar = () => {
             <ul className="mt-4 space-y-2">
               {user ? (
                 <>
-                  <li>
+                  <li className="">
                     <Link
                       to="/dashboard"
-                      className="w-full flex items-center justify-center gap-2"
+                      className="w-full  gap-2"
                       onClick={() => setIsOpen(false)}
                     >
-                      <Button variant="ghost">
+                      <Button variant="secondary" className="w-25">
                         <HiChartPie className="text-lg" />
                         Dashboard
                       </Button>
                     </Link>
                   </li>
                   <li>
-                    <Button
-                      variant="ghost"
-                      className="w-full flex items-center gap-2"
-                      onClick={handleLogout}
+                    <Link
+                      to="#"
+                      className="w-full gap-2"
+                      onClick={() => {
+                        setIsOpen(false);
+                        handleLogout();
+                      }}
                     >
-                      <LogOut className="text-lg" />
-                      Logout
-                    </Button>
+                      <Button variant="secondary" className="w-30">
+                        <LogOutIcon className="text-lg" />
+                        Logout {"     "}
+                      </Button>
+                    </Link>
                   </li>
                 </>
               ) : (
                 <li>
-                  <Button
-                    variant="ghost"
-                    className="w-full flex items-center gap-2"
+                  <Link
+                    to="/login"
+                    className="w-full gap-2 mb-5 "
                     onClick={() => {
-                      navigate("/login");
                       setIsOpen(false);
                     }}
                   >
-                    <HiLogin className="text-lg" />
-                    Sign In
-                  </Button>
+                    <Button variant="secondary">
+                      <HiLogin />
+                      Login
+                    </Button>
+                  </Link>
                 </li>
+              )}
+              <p className="font-bold tracking-widest ">Categories:</p>
+              {loading ? (
+                <Loader />
+              ) : (
+                categories.map((category) => (
+                  <li key={category._id} className="py-1 px-1">
+                    <Link
+                      to={`/all-posts/${encodeURIComponent(category.name)}`}
+                      className="w-full flex items-center gap-2 hover:text-blue-400"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      • {category.name}
+                    </Link>
+                  </li>
+                ))
               )}
             </ul>
           </div>
