@@ -70,7 +70,7 @@ const AllPosts = () => {
   return (
     <div className="w-[80%] mx-auto">
       <p className="text-xl font-bold text-center my-5 underline underline-offset-8 font-siliguri">
-        Category: {category}
+        {category} Articles
       </p>
       <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-8">
         {/* Search Bar */}

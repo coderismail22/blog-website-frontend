@@ -117,7 +117,7 @@ const SidebarForNavbar = () => {
                       className="w-full flex items-center gap-2 hover:text-blue-400"
                       onClick={() => setIsOpen(false)}
                     >
-                      • {category.name}
+                      •{" "}{category.name}
                     </Link>
                   </li>
                 ))

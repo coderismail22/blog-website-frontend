@@ -14,6 +14,7 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from "react-share";
+import SimilarPostsAutomatic from "../SimilarPostsAutomatic/SimilarPostsAutomatic";
 
 const PostDetails = () => {
   const { slug } = useParams();
@@ -89,14 +90,19 @@ const PostDetails = () => {
       <ScrollRestoration />
 
       {/* Title */}
-      <div className="bg-gray-900 text-white">
+      {/*  for title bg-gray-900 is good match */}
+      <div
+        className="
+      bg-white
+       text-black"
+      >
         <p className="text-3xl lg:text-5xl py-20 font-Playfair lg:w-1/2 text-center mx-auto">
           {post?.title}
         </p>
       </div>
 
       {/* Cover Image */}
-      <div className="flex flex-col items-center justify-center mt-5 max-w-[300px] mx-auto">
+      <div className="flex flex-col items-center justify-center mt-5 max-w-[600px] mx-auto">
         <img className="w-full" src={post?.coverImage} alt="Image" />
       </div>
 
@@ -105,7 +111,7 @@ const PostDetails = () => {
         <div className="space-y-2 py-5 ">
           <p className="flex text-[12px] gap-2 items-center ">
             <PersonIcon />
-          {console.log(post?.author)}
+            {console.log(post?.author)}
             Author: {post?.author?.name}
           </p>
           <p className="flex text-[12px] gap-2 items-center ">
@@ -124,7 +130,7 @@ const PostDetails = () => {
         </div>
 
         {/* SimlarPosts (Automatic) */}
-        {/* <SimilarPostsAutomatic similarPosts={similarPosts} /> */}
+        <SimilarPostsAutomatic similarPosts={similarPosts} />
 
         {/* Similar/Related Post(Manually) */}
         <SimilarPostsManual similarPosts={post?.relatedPosts} />

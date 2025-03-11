@@ -42,7 +42,7 @@ const QuoteOfTheDay = () => {
           Quote of the Day
         </h2>
       </div>
-      <p className="text-center font-Playfair text-xl font-semibold mt-4">
+      <p className="text-center text-xl font-semibold mt-4">
         {quote?.quote}
       </p>
       <p className="font-semibold mt-3">

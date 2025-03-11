@@ -42,7 +42,7 @@ const NewsSection = ({ post, flexReverse }) => {
           <div className="md:flex border-t">
             {post.relatedPosts?.slice(0, 3).map((related) => (
               <Link
-                to={related?.slug}
+                to={`/post-details/${related.slug}`}
                 key={related._id}
                 className="md:border-r mr-3 mt-3"
               >
@@ -70,7 +70,7 @@ const NewsSection = ({ post, flexReverse }) => {
         {/* Sidebar News */}
         <div className="md:ml-3 mx-2 md:w-[30%] space-y-4">
           {post?.sidebarPosts?.slice(0, 2)?.map((sidebar) => (
-            <Link to={sidebar?.slug} key={sidebar._id}>
+            <Link to={`/post-details/${sidebar.slug}`} key={sidebar._id}>
               <img src={sidebar.coverImage} alt="Img" />
               <p className=" font-bold">
                 <Link to={`/post-details/${sidebar.slug}`}>

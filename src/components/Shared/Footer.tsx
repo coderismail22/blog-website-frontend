@@ -6,24 +6,12 @@ const Footer = () => {
       <footer className="text-white body-font">
         <div className="container px-5 py-12 mx-auto flex flex-col md:flex-row md:items-start">
           {/* Brand Section */}
-          <div className="w-full md:w-1/3 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+          <div className=" w-full md:w-1/3 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left px-5">
             <Link
               to="/"
               className="flex title-font font-medium items-center justify-center md:justify-start text-gray-900"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-              </svg>
-              <span className="ml-3 text-xl text-white">Aidasx</span>
+              <span className=" text-5xl text-white lowercase ">Aidasx</span>
             </Link>
             <p className="mt-2 text-sm text-white">One step ahead, always.</p>
           </div>
