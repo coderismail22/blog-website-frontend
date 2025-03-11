@@ -68,7 +68,7 @@ const Footer = () => {
         </div>
       </footer>
       <section className="bg-gray-900 text-white">
-        <h1 className="text-center ">
+        <h1 className="text-center text-sm">
           Copyright &copy; Aidasx. All Rights Reserved.
         </h1>
       </section>
