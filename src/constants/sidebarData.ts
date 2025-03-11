@@ -1,4 +1,4 @@
-import { Quote } from "lucide-react";
+import { Quote, User } from "lucide-react";
 import { BiCategory } from "react-icons/bi";
 import { FaHome, FaRegListAlt, FaRegEdit } from "react-icons/fa";
 
@@ -27,7 +27,7 @@ export const sidebarData = {
       label: "Add Category",
       path: "/dashboard/admin/add-category",
       icon: BiCategory,
-    },
+    }, 
     {
       icon: FaRegEdit,
       label: "New Post",
@@ -42,6 +42,11 @@ export const sidebarData = {
       icon: Quote,
       label: "Quote",
       path: "/dashboard/admin/quote",
+    },
+    {
+      icon: User,
+      label: "Users",
+      path: "/dashboard/admin/users",
     },
   ],
   user: [{ label: "Home", path: "/dashboard/admin/profile", icon: FaHome }],

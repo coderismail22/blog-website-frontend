@@ -16,6 +16,7 @@ import AllNotice from "@/Pages/Dashboard/Admin/Notice/AllNotice";
 import PublishNotice from "@/Pages/Dashboard/Admin/Notice/PublishNotice";
 import EditNotice from "@/Pages/Dashboard/Admin/Notice/EditNotice";
 import Quote from "@/Pages/Dashboard/Admin/Quote/Quote";
+import Users from "@/Pages/Dashboard/Admin/Users/AllUsers";
 // import PublishNewBlogPost from "@/Pages/Dashboard/Admin/PublishNewPost/PublishNewBlogPost";
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,7 @@ export const router = createBrowserRouter([
       { path: "/dashboard/admin/add-service", element: <PublishNewPost /> },
       { path: "/dashboard/admin/edit-service", element: <MyBlogPosts /> },
       { path: "/dashboard/admin/quote", element: <Quote /> },
+      { path: "/dashboard/admin/users", element: <Users /> },
     ],
   },
   {
