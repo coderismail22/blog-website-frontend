@@ -38,6 +38,7 @@ const Desktop = () => {
     <div>
       <div className="py-2 w-11/12 mx-auto text-white flex items-center justify-between">
         <div className="flex justify-center items-center gap-3">
+            <SidebarForNavbar />
           <Link to="/" className="text-4xl font-semibold">
             Aidasx
           </Link>
