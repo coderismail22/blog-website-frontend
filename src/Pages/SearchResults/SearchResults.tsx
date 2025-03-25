@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import axiosInstance from "@/api/axiosInstance";
+import SearchBar from "./SearchBar";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +33,7 @@ const SearchResults = () => {
           setArticles((prevArticles) => [
             ...prevArticles,
             ...newArticles.filter(
-              (newArticle) =>
+              (newArticle: any) =>
                 !prevArticles.some(
                   (existingArticle) => existingArticle.id === newArticle.id
                 )
@@ -41,7 +43,6 @@ const SearchResults = () => {
 
         // Check if there are more articles to load
         setHasMore(newArticles.length === pageSize);
-
       } catch (error) {
         console.error("Error fetching articles:", error);
       } finally {
@@ -60,6 +61,9 @@ const SearchResults = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
+      <div className="flex flex-col items-center justify-center my-5">
+        <SearchBar />
+      </div>
       <h1 className="text-2xl font-semibold mb-4">
         Search results for: <span className="text-blue-600">{query}</span>
       </h1>
@@ -71,10 +75,10 @@ const SearchResults = () => {
       ) : (
         <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles?.map((article) => (
+            {articles?.map((article, index) => (
               <Link
                 to={`/post-details/${article.slug}`}
-                key={article.id}
+                key={index + 1}
                 className="bg-white p-4 rounded-lg shadow"
               >
                 <img

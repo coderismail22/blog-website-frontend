@@ -25,7 +25,7 @@ const PostDetails = () => {
   const [post, setPost] = useState("");
   const [similarPosts, setSimilarPosts] = useState([]);
   // Share URL (can be set to current page's URL)
-  const shareUrl = `https://demo-blog-sw-2025.netlify.app/post-details/${slug}`;
+  const shareUrl = `https://aidasx.netlify.app/post-details/${slug}`;
   // Fetch post details
   useEffect(() => {
     const fetchPostDetails = async () => {
